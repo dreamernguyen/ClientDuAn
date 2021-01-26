@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test(View view) {
-        Toast.makeText(this, "this", Toast.LENGTH_SHORT).show();
-        customCall.danhSachBaiVietAn("600688a68df31f0984c97de7");
 
     }
 

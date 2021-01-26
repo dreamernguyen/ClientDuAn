@@ -36,6 +36,9 @@ public class ResponseData {
     List<NguoiDung> ListNguoiDung;
 
 
+    @SerializedName("ListMatHang")
+    @Expose
+    List<BinhLuan> ListMatHang;
 
     @SerializedName("ListBinhLuan")
     @Expose

@@ -47,10 +47,31 @@ public interface ApiInterface {
     @POST("/baiViet/an/{id}")
     Call<ResponseData> anBaiViet(@Path("id") String idBaiViet);
 
-    @GET("/baiViet/danhSachAn/{id}")
-    Call<ResponseData> danhSachBaiVietAn(@Path("id") String idNguoiDung);
+    @POST("/baiviet/huyAn/{id}")
+    Call<ResponseData> huyAnBaiViet(@Path("id") String idBaiViet);
+
+    @GET("/baiViet/baiVietBanBe/{id}")
+    Call<ResponseData> danhSachBaiVietBanBe(@Path("id") String idNguoiDung);
+
+    @POST("/baiViet/caNhan/{id}")
+    Call<ResponseData> xemTrangCaNhanCuaToi (@Path("id") String idNguoiDung);
+
 
     //  MatHang
+    @POST("/matHang/dangBai")
+    Call<ResponseData> themMatHang(@Body MatHang matHang);
+    @POST("matHang/xoa/{id}")
+    Call<ResponseData> xoaMatHang(@Path("id") String idMatHang);
+    @POST("matHang/chinhSua/{id}")
+    Call<ResponseData> chinhSuaMatHang(@Body MatHang matHang);
     @GET("/matHang/danhSach")
-    Call<List<MatHang>> danhSachMatHang();
+    Call<ResponseData> danhSachMatHang();
+    @POST("/matHang/chiTiet/{id}")
+    Call<ResponseData> matHangChiTiet(@Path("id") String idNguoiDung);
+    @POST("/matHang/timKiemHangMuc/{tuKhoa}")
+    Call<ResponseData> timKiemHangMuc(@Path("tuKhoa") String tuKhoa);
+    @POST("/matHang/danhSachToiBan/{id}")
+    Call<ResponseData> danhSachToiBan(@Path("id") String idNguoiDung);
+    @POST("/matHang/timKiemTieuDe/{tieuDe}")
+    Call<ResponseData> timKiemTieuDe(@Path("tieuDe") String tieuDe);
 }
