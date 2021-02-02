@@ -43,7 +43,7 @@ public class TheoDoiFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
         rvBaiViet.setLayoutManager(linearLayoutManager);
         rvBaiViet.setAdapter(baiVietAdapter);
-        loadBaiViet();
+//        loadBaiViet();
         return view;
     }
 

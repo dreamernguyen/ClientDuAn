@@ -28,14 +28,14 @@ public interface ApiService {
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://10.0.207.245:3000")
+            .baseUrl("http://192.168.31.46:3000/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
 
     //Người dùng
     //Bài viết
-    @GET("/baiViet/danhSach")
+    @GET("baiViet/danhSach")
     Call<List<BaiViet>> danhSachBaiViet();
     @POST("baiViet/dangBai")
     Call<BaiViet> dangBai(@Path("idNguoiDung") String idNguoiDung,@Body BaiViet baiViet);

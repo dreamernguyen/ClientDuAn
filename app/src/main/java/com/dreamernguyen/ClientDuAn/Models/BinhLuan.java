@@ -9,7 +9,7 @@ public class BinhLuan {
     private String id;
     @SerializedName("idNguoiDung")
     @Expose
-    private String idNguoiDung;
+    private NguoiDung idNguoiDung;
     @SerializedName("noiDung")
     @Expose
     private String noiDung;
@@ -21,7 +21,7 @@ public class BinhLuan {
     private String thoiGianCapNhat;
 
     //Tạo mới hoặc cập nhật
-    public BinhLuan(String idNguoiDung, String noiDung) {
+    public BinhLuan(NguoiDung idNguoiDung, String noiDung) {
         this.idNguoiDung = idNguoiDung;
         this.noiDung = noiDung;
     }
@@ -34,11 +34,11 @@ public class BinhLuan {
         this.id = id;
     }
 
-    public String getIdNguoiDung() {
+    public NguoiDung getIdNguoiDung() {
         return idNguoiDung;
     }
 
-    public void setIdNguoiDung(String idNguoiDung) {
+    public void setIdNguoiDung(NguoiDung idNguoiDung) {
         this.idNguoiDung = idNguoiDung;
     }
 
