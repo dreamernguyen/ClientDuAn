@@ -30,11 +30,13 @@ public class BaiViet {
     @SerializedName("thoiGianCapNhat")
     @Expose
     private String thoiGianCapNhat;
-
     //Đăng bài
     public BaiViet(String noiDung,Boolean trangThai) {
         this.noiDung = noiDung;
         this.trangThai = trangThai;
+    }
+    public BaiViet(){
+
     }
 
 

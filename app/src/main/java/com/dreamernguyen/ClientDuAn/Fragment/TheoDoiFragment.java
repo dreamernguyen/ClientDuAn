@@ -13,13 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dreamernguyen.ClientDuAn.Adapter.BaiVietAdapter;
 import com.dreamernguyen.ClientDuAn.ApiService;
+import com.dreamernguyen.ClientDuAn.Models.Anh;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
 import com.dreamernguyen.ClientDuAn.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,12 +56,14 @@ public class TheoDoiFragment extends Fragment {
                 Log.d("fff", "onResponse: "+baiViet);
                 Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung());
                 Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung().getHoTen());
+                Toast.makeText(getActivity(), ""+ response.body().size(), Toast.LENGTH_SHORT).show();
+
                 baiVietAdapter.setData(response.body());
             }
-
             @Override
             public void onFailure(Call<List<BaiViet>> call, Throwable t) {
                 Log.d("fff", "onFailure: "+t.getMessage());
+                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
             }
         });
     }

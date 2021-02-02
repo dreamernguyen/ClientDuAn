@@ -37,11 +37,11 @@ public class TabLayoutAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Theo Dõi";
+                return "Khám phá";
             case 1:
-                return "Khám Phá";
-            default:
                 return "Theo Dõi";
+            default:
+                return "Khám phá";
         }
     }
 }
