@@ -1,5 +1,6 @@
 package com.dreamernguyen.ClientDuAn.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,10 @@ import com.dreamernguyen.ClientDuAn.R;
 import java.util.List;
 
 public class AnhAdapter extends PagerAdapter {
-    BaiVietAdapter context;
+    Context context;
     List<Anh> mlistanh;
 
-    public AnhAdapter(BaiVietAdapter context, List<Anh> mlistanh) {
+    public AnhAdapter(Context context, List<Anh> mlistanh) {
         this.context = context;
         this.mlistanh = mlistanh;
     }

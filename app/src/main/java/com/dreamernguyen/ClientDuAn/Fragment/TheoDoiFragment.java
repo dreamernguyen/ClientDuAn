@@ -43,7 +43,7 @@ public class TheoDoiFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
         rvBaiViet.setLayoutManager(linearLayoutManager);
         rvBaiViet.setAdapter(baiVietAdapter);
-//        loadBaiViet();
+        loadBaiViet();
         return view;
     }
 
@@ -56,14 +56,13 @@ public class TheoDoiFragment extends Fragment {
                 Log.d("fff", "onResponse: "+baiViet);
                 Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung());
                 Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung().getHoTen());
-                Toast.makeText(getActivity(), ""+ response.body().size(), Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(getActivity(), ""+ response.body().size(), Toast.LENGTH_SHORT).show();
                 baiVietAdapter.setData(response.body());
             }
             @Override
             public void onFailure(Call<List<BaiViet>> call, Throwable t) {
                 Log.d("fff", "onFailure: "+t.getMessage());
-                Toast.makeText(getActivity(), "error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Không có internet !", Toast.LENGTH_SHORT).show();
             }
         });
     }

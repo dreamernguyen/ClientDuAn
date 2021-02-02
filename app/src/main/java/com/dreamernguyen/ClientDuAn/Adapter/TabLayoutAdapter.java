@@ -20,9 +20,9 @@ public class TabLayoutAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new TheoDoiFragment();
-            case 1:
                 return new KhamPhaFragment();
+            case 1:
+                return new TheoDoiFragment();
         }
         return null;
     }

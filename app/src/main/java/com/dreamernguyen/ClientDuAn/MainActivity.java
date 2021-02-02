@@ -77,20 +77,20 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        Call<DuLieuTraVe> call2 = ApiService.apiService.baiVietTheoDoi("6006875981484b2c7c2176c5");
-        call2.enqueue(new Callback<DuLieuTraVe>() {
-            @Override
-            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
-                Log.d("ppppp", "onResponse: "+response.body().getDanhSachBaiViet());
-                Log.d("aaaa", "onResponse: "+response.body().getDanhSachBaiViet().size());
-            }
-
-            @Override
-            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
-                Log.d("vvv", "onFailure: "+t.getMessage());
-
-            }
-        });
+//        Call<DuLieuTraVe> call2 = ApiService.apiService.baiVietTheoDoi("6006875981484b2c7c2176c5");
+//        call2.enqueue(new Callback<DuLieuTraVe>() {
+//            @Override
+//            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+//                Log.d("ppppp", "onResponse: "+response.body().getDanhSachBaiViet());
+//                Log.d("aaaa", "onResponse: "+response.body().getDanhSachBaiViet().size());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+//                Log.d("vvv", "onFailure: "+t.getMessage());
+//
+//            }
+//        });
         viewPager = findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(4);
         bottomNavigationView = findViewById(R.id.bottom_nav);

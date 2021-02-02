@@ -54,7 +54,6 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
 
     @Override
     public void onBindViewHolder(@NonNull BaiVietViewHolder holder, int position) {
-//        Random rd = new Random();
         Collections.shuffle(listBaiViet);
         BaiViet baiViet = listBaiViet.get(position);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -64,25 +63,24 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
         format.setTimeZone(TimeZone.getTimeZone("UTC+7"));
         List<Anh> anhList = new ArrayList<>();
-        if (anhList.size() < 1){
-            holder.vpgAnh.setVisibility(View.GONE);
-        } else {
-            anhAdapter  = new AnhAdapter(this, anhList);
-            holder.vpgAnh.setAdapter(anhAdapter);
-        }
-        Boolean trangThai = true;
         for (int i = 0; i < baiViet.getLinkAnh().size(); i++){
             Anh anh = new Anh(baiViet.getLinkAnh().get(i));
             anhList.add(anh);
         }
+        Boolean trangThai = true;
         if (listBaiViet == null){
             return;
         }
-
+        if (anhList.size() < 1){
+            holder.vpgAnh.setVisibility(View.GONE);
+        } else {
+            anhAdapter  = new AnhAdapter(context, anhList);
+            holder.vpgAnh.setAdapter(anhAdapter);
+            holder.vpgAnh.setVisibility(View.VISIBLE);
+        }
         try {
             Date date = format.parse(baiViet.getThoiGianTao());
             long diff = now.getTime() - date.getTime();
-
             long giay =  (diff / 1000);
             long phut =  (diff / (1000 * 60));
             long gio =  (diff / (1000 * 60 * 60));
