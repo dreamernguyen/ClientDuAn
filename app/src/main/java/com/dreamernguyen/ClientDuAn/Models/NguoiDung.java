@@ -8,7 +8,9 @@ import java.util.List;
 public class NguoiDung {
     public NguoiDung() {
     }
-
+    @SerializedName("avatar")
+    @Expose
+    private String avatar;
     @SerializedName("dangTheoDoi")
     @Expose
     private List<Object> dangTheoDoi = null;
@@ -152,5 +154,13 @@ public class NguoiDung {
 
     public void setDiaChi(String diaChi) {
         this.diaChi = diaChi;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

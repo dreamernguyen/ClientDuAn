@@ -9,7 +9,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.YoKaFo">
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://@dreamernguyen" />
         <activity android:name="com.dreamernguyen.ClientDuAn.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

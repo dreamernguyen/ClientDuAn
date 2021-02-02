@@ -1,4 +1,74 @@
 package com.dreamernguyen.ClientDuAn.Adapter;
 
-public class BinhLuanAdapter {
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.bumptech.glide.Glide;
+import com.dreamernguyen.ClientDuAn.Models.BinhLuan;
+import com.dreamernguyen.ClientDuAn.Models.MatHang;
+import com.dreamernguyen.ClientDuAn.R;
+
+import java.util.List;
+
+public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.BinhLuanViewHolder> {
+    private Context context;
+    private List<BinhLuan> listBinhLuan;
+
+    public BinhLuanAdapter(Context context) {
+        this.context = context;
+    }
+
+    public void setData(List<BinhLuan> list) {
+        this.listBinhLuan = list;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public BinhLuanViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_mat_hang, parent, false);
+        return new BinhLuanViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BinhLuanViewHolder holder, int position) {
+        BinhLuan binhLuan = listBinhLuan.get(position);
+
+        Glide.with(context).load(binhLuan.getIdNguoiDung().getAvatar()).into(holder.imgAvatar);
+        holder.tvTenNguoiDung.setText(binhLuan.getIdNguoiDung().getHoTen());
+        holder.tvNoiDung.setText(binhLuan.getNoiDung());
+
+    }
+
+    @Override
+    public int getItemCount() {
+        if (listBinhLuan != null) {
+            return listBinhLuan.size();
+        }
+        return 0;
+    }
+
+    public class BinhLuanViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTenNguoiDung, tvNoiDung;
+        ImageView imgAvatar;
+        ViewPager vpAnh;
+
+
+        public BinhLuanViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imgAvatar = itemView.findViewById(R.id.imgAvatar);
+            tvTenNguoiDung = itemView.findViewById(R.id.tvTenNguoiDung);
+            tvNoiDung = itemView.findViewById(R.id.tvNoiDung);
+        }
+    }
 }
+
+

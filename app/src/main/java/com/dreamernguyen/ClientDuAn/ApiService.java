@@ -1,6 +1,7 @@
 package com.dreamernguyen.ClientDuAn;
 
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.MatHang;
 import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
 import com.dreamernguyen.ClientDuAn.Models.TinNhan;
@@ -28,27 +29,45 @@ public interface ApiService {
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.31.46:3000/")
+            .baseUrl("http://192.168.1.12:3000/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
 
     //Người dùng
+    @FormUrlEncoded
+    @POST("nguoiDung/theoDoi")
+    Call<DuLieuTraVe> theoDoi(@Field("idNguoi1")String idNguoi1, @Field("idNguoi2") String idNguoi2);
+    @FormUrlEncoded
+    @POST("nguoiDung/huyTheoDoi")
+    Call<DuLieuTraVe> huyTheoDoi(@Field("idNguoi1")String idNguoi1,@Field("idNguoi2") String idNguoi2);
+
     //Bài viết
     @GET("baiViet/danhSach")
-    Call<List<BaiViet>> danhSachBaiViet();
-    @POST("baiViet/dangBai")
-    Call<BaiViet> dangBai(@Path("idNguoiDung") String idNguoiDung,@Body BaiViet baiViet);
-
+    Call<DuLieuTraVe> danhSachBaiViet();
+    @GET("baiViet/dangTheoDoi/{id}")
+    Call<DuLieuTraVe> baiVietTheoDoi(@Path("id")String idNguoiDung);
+    @POST("baiViet/dangBai/{id}")
+    Call<DuLieuTraVe> dangBai(@Path("id") String idNguoiDung,@Body BaiViet baiViet);
+    @POST("baiViet/xoa/{id}")
+    Call<DuLieuTraVe> xoaBaiViet(@Path("id") String idBaiViet);
+    @POST("baiViet/an/{id}")
+    Call<DuLieuTraVe> anBaiViet(@Path("id") String idBaiViet);
 
     //Bình luận
+
     //Tin nhắn
     @POST("/tinNhan/chat")
     Call<TinNhan> postMessage(@Body TinNhan tinNhan);
     @GET("tinNhan/danhSach")
     Call<List<TinNhan>> getTest();
+
     //Mặt hàng
     @POST("matHang/dangBai")
-    Call<MatHang> testMatHang (@Path("idNguoiDung") String idNguoiDung, @Body MatHang matHang);
+    Call<DuLieuTraVe> testMatHang (@Path("idNguoiDung") String idNguoiDung, @Body MatHang matHang);
+    @GET("matHang/danhSach")
+    Call<DuLieuTraVe> danhSachMatHang();
+    @POST("matHang/chiTiet/{id}")
+    Call<DuLieuTraVe> matHangChiTiet(@Path("id")String idMatHang);
 
 }
