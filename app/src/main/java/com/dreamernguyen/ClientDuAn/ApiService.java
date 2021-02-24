@@ -37,7 +37,7 @@ public interface ApiService {
     //Bài viết
     @GET("baiViet/danhSach")
     Call<List<BaiViet>> danhSachBaiViet();
-    @POST("baiViet/dangBai")
+    @POST("baiViet/dangBai/{id}")
     Call<BaiViet> dangBai(@Path("idNguoiDung") String idNguoiDung,@Body BaiViet baiViet);
 
 

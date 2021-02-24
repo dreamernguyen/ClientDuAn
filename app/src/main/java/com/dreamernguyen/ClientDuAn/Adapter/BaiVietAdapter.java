@@ -62,22 +62,22 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
         Log.d("now", "onBindViewHolder: " + now);
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
         format.setTimeZone(TimeZone.getTimeZone("UTC+7"));
-        List<Anh> anhList = new ArrayList<>();
-        for (int i = 0; i < baiViet.getLinkAnh().size(); i++){
-            Anh anh = new Anh(baiViet.getLinkAnh().get(i));
-            anhList.add(anh);
-        }
-        Boolean trangThai = true;
-        if (listBaiViet == null){
-            return;
-        }
-        if (anhList.size() < 1){
-            holder.vpgAnh.setVisibility(View.GONE);
-        } else {
-            anhAdapter  = new AnhAdapter(context, anhList);
-            holder.vpgAnh.setAdapter(anhAdapter);
-            holder.vpgAnh.setVisibility(View.VISIBLE);
-        }
+//
+//        for (int i = 0; i < baiViet.getLinkAnh().size(); i++){
+//            Anh anh = new Anh(baiViet.getLinkAnh().get(i));
+//            anhList.add(anh);
+//        }
+//        Boolean trangThai = true;
+//        if (listBaiViet == null){
+//            return;
+//        }
+//        if (anhList.size() < 1){
+//            holder.vpgAnh.setVisibility(View.GONE);
+//        } else {
+//            anhAdapter  = new AnhAdapter(context, anhList);
+//            holder.vpgAnh.setAdapter(anhAdapter);
+//            holder.vpgAnh.setVisibility(View.VISIBLE);
+//        }
         try {
             Date date = format.parse(baiViet.getThoiGianTao());
             long diff = now.getTime() - date.getTime();
@@ -102,7 +102,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        if (trangThai ==  false){
+        if (baiViet.getTrangThai() ==  false){
             holder.tvTrangThai.setText("Chỉ mình tôi");
         } else {
             holder.tvTrangThai.setText("Công khai");

@@ -1,13 +1,17 @@
 package com.dreamernguyen.ClientDuAn.Adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.dreamernguyen.ClientDuAn.Models.Anh;
@@ -15,43 +19,47 @@ import com.dreamernguyen.ClientDuAn.R;
 
 import java.util.List;
 
-public class AnhAdapter extends PagerAdapter {
-    Context context;
-    List<Anh> mlistanh;
+public class AnhAdapter extends RecyclerView.Adapter<AnhAdapter.AnhViewHolder> {
+private Context context;
+private List<Uri> listAnh;
 
-    public AnhAdapter(Context context, List<Anh> mlistanh) {
+public AnhAdapter(Context context) {
         this.context = context;
-        this.mlistanh = mlistanh;
-    }
-
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.item_anh, container, false);
-        ImageView imgBaiViet = view.findViewById(R.id.imBaiViet);
-        Anh anh = mlistanh.get(position);
-        if (anh!= null ){
-            Glide.with(container).load(anh.getLinkAnh()).into(imgBaiViet);
         }
-        container.addView(view);
-        return view;
-    }
 
-    @Override
-    public int getCount() {
-        if (mlistanh != null){
-            return mlistanh.size();
+public void setData(List<Uri> list) {
+        this.listAnh = list;
+        notifyDataSetChanged();
+        }
+
+@NonNull
+@Override
+public AnhViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_anh, parent, false);
+        return new AnhViewHolder(view);
+        }
+
+@Override
+public void onBindViewHolder(@NonNull AnhViewHolder holder, int position) {
+        Glide.with(context).load(listAnh.get(position)).into(holder.imgBaiViet);
+
+        }
+
+@Override
+public int getItemCount() {
+        if (listAnh != null) {
+        return listAnh.size();
         }
         return 0;
-    }
+        }
 
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == object;
-    }
+public class AnhViewHolder extends RecyclerView.ViewHolder {
+    ImageView imgBaiViet;
 
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View) object);
+
+    public AnhViewHolder(@NonNull View itemView) {
+        super(itemView);
+        imgBaiViet = itemView.findViewById(R.id.imBaiViet);
     }
+}
 }

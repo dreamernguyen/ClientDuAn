@@ -20,6 +20,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerCrop"
+            android:id="@+id/imChonAnh"
             android:src="@drawable/anhdemo1"/>
         <TextView
             android:background="@drawable/background2"
@@ -32,19 +33,29 @@
             android:layout_height="wrap_content"
             android:hint="Bạn đang nghỉ gì "/>
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Bài viết"
-        android:textColor="@color/black"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBaiViet"
+            android:id="@+id/rvAnh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnDang"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:text="Đăng bài"/>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="20dp"-->
+<!--        android:text="Bài viết"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:paddingRight="10dp"-->
+<!--        android:paddingLeft="10dp"/>-->
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/rvBaiViet"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
 
 </LinearLayout>
