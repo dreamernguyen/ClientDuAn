@@ -1,6 +1,7 @@
 package com.dreamernguyen.ClientDuAn;
 
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.MatHang;
 import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
 import com.dreamernguyen.ClientDuAn.Models.TinNhan;
@@ -28,17 +29,26 @@ public interface ApiService {
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://10.0.207.245:3000/")
+            .baseUrl("http://192.168.0.114:3000/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
 
     //Người dùng
+    
     //Bài viết
     @GET("baiViet/danhSach")
     Call<List<BaiViet>> danhSachBaiViet();
     @POST("baiViet/dangBai/{id}")
-    Call<BaiViet> dangBai(@Path("idNguoiDung") String idNguoiDung,@Body BaiViet baiViet);
+    Call<BaiViet> dangBai(@Path("id") String idNguoiDung,@Body BaiViet baiViet);
+    @POST("baiViet/capNhat/{id}")
+    Call<DuLieuTraVe> capNhatBaiViet(@Path("id") String idBaiViet,@Body BaiViet baiViet);
+    @GET("baiViet/chiTiet/{id}")
+    Call<DuLieuTraVe> xemChiTiet(@Path("id") String idBaiViet);
+    @POST("baiViet/an/{id}")
+    Call<DuLieuTraVe> anBaiViet(@Path("id") String id);
+    @POST("baiViet/xoa/{id}")
+    Call<DuLieuTraVe> xoaBaiViet(@Path("id") String id);
 
 
     //Bình luận

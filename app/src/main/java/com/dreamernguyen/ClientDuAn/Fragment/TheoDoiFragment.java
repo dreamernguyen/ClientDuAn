@@ -38,32 +38,9 @@ public class TheoDoiFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_theo_doi, container, false);
-        rvBaiViet =  view.findViewById(R.id.rvBaiViet);
-        baiVietAdapter = new BaiVietAdapter(getContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
-        rvBaiViet.setLayoutManager(linearLayoutManager);
-        rvBaiViet.setAdapter(baiVietAdapter);
-        loadBaiViet();
+
         return view;
     }
 
-    public void loadBaiViet(){
-        Call<List<BaiViet>> call = ApiService.apiService.danhSachBaiViet();
-        call.enqueue(new Callback<List<BaiViet>>() {
-            @Override
-            public void onResponse(Call<List<BaiViet>> call, Response<List<BaiViet>> response) {
-                BaiViet baiViet = response.body().get(0);
-                Log.d("fff", "onResponse: "+baiViet);
-                Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung());
-                Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung().getHoTen());
-//                Toast.makeText(getActivity(), ""+ response.body().size(), Toast.LENGTH_SHORT).show();
-                baiVietAdapter.setData(response.body());
-            }
-            @Override
-            public void onFailure(Call<List<BaiViet>> call, Throwable t) {
-                Log.d("fff", "onFailure: "+t.getMessage());
-                Toast.makeText(getActivity(), "Không có internet !", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+
 }

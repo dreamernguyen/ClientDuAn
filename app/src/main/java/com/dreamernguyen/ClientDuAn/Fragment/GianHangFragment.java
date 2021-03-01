@@ -30,7 +30,7 @@ public class GianHangFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view  = inflater.inflate(R.layout.fragment_gian_hang, container, false);
-        MediaManager.init(getContext());
+
 
         return view;
     }

@@ -31,13 +31,11 @@ public class BaiViet {
     @Expose
     private String thoiGianCapNhat;
     //Đăng bài
-    public BaiViet(String noiDung,Boolean trangThai) {
+    public BaiViet(String noiDung,List<String> linkAnh) {
         this.noiDung = noiDung;
-        this.trangThai = trangThai;
+        this.linkAnh = linkAnh;
     }
-    public BaiViet(){
 
-    }
 
 
     public List<String> getLinkAnh() {

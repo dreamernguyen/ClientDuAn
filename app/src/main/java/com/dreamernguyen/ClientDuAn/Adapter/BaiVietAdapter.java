@@ -1,20 +1,28 @@
 package com.dreamernguyen.ClientDuAn.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.dreamernguyen.ClientDuAn.ApiService;
+import com.dreamernguyen.ClientDuAn.DangBaiActivity;
 import com.dreamernguyen.ClientDuAn.Models.Anh;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
+import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
 import com.dreamernguyen.ClientDuAn.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
@@ -31,10 +39,15 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietViewHolder> {
     private AnhAdapter anhAdapter;
     private Context context;
     private List<BaiViet> listBaiViet;
+
 
     public BaiVietAdapter(Context context) {
         this.context = context;
@@ -62,22 +75,8 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
         Log.d("now", "onBindViewHolder: " + now);
         SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yyyy");
         format.setTimeZone(TimeZone.getTimeZone("UTC+7"));
-//
-//        for (int i = 0; i < baiViet.getLinkAnh().size(); i++){
-//            Anh anh = new Anh(baiViet.getLinkAnh().get(i));
-//            anhList.add(anh);
-//        }
-//        Boolean trangThai = true;
-//        if (listBaiViet == null){
-//            return;
-//        }
-//        if (anhList.size() < 1){
-//            holder.vpgAnh.setVisibility(View.GONE);
-//        } else {
-//            anhAdapter  = new AnhAdapter(context, anhList);
-//            holder.vpgAnh.setAdapter(anhAdapter);
-//            holder.vpgAnh.setVisibility(View.VISIBLE);
-//        }
+
+
         try {
             Date date = format.parse(baiViet.getThoiGianTao());
             long diff = now.getTime() - date.getTime();
@@ -110,6 +109,62 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
         holder.tvTenNguoiDung.setText(baiViet.getIdNguoiDung().getHoTen());
         holder.tvNoiDung.setText(baiViet.getNoiDung());
         holder.tvLuotTim.setText(baiViet.getLuotThich().size()+ " Lượt tim");
+
+        holder.imTuyChinh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View viewDailog = ((FragmentActivity)context).getLayoutInflater().inflate(R.layout.layout_bottom_sheet, null);
+                BottomSheetDialog bottomSheetDialog  = new BottomSheetDialog(context);
+                bottomSheetDialog.setContentView(viewDailog);
+                bottomSheetDialog.show();
+
+                TextView btnXoa = viewDailog.findViewById(R.id.btnXoa);
+                TextView btnChinhSua = viewDailog.findViewById(R.id.btnChinhSua);
+                TextView btnAn = viewDailog.findViewById(R.id.btnAn);
+
+                if(baiViet.getIdNguoiDung().getId().equals("600f0471e214d93278f7af7f")){
+                    btnXoa.setVisibility(View.VISIBLE);
+                }else {
+                    btnXoa.setVisibility(View.GONE);
+                }
+                btnXoa.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Call<DuLieuTraVe> call = ApiService.apiService.xoaBaiViet(baiViet.getId()) ;
+                        call.enqueue(new Callback<DuLieuTraVe>() {
+                            @Override
+                            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+                                Toast.makeText(context, response.body().getThongBao(), Toast.LENGTH_SHORT).show();
+                                notifyDataSetChanged();
+                                bottomSheetDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+                                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+                btnChinhSua.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, DangBaiActivity.class);
+                        intent.putExtra("id",baiViet.getId());
+                        context.startActivity(intent);
+                    }
+                });
+//
+            }
+
+        });
+        holder.tvLuotTim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "ddd"+baiViet.getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -123,6 +178,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
     public class BaiVietViewHolder extends RecyclerView.ViewHolder {
         TextView tvTenNguoiDung, tvThoiGian, tvNoiDung, tvTrangThai, tvLuotTim;
         ViewPager vpgAnh;
+        ImageView imTuyChinh;
         public BaiVietViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTenNguoiDung = itemView.findViewById(R.id.tvTenNguoiDung);
@@ -131,6 +187,9 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
             tvLuotTim = itemView.findViewById(R.id.tvTim);
             tvTrangThai = itemView.findViewById(R.id.tvTrangThai);
             vpgAnh = itemView.findViewById(R.id.vpgImage);
+            imTuyChinh = itemView.findViewById(R.id.imTuyChinh);
         }
     }
+
+
 }
