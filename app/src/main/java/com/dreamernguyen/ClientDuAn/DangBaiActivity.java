@@ -46,7 +46,7 @@ import retrofit2.Response;
 public class DangBaiActivity extends AppCompatActivity {
     RecyclerView rvAnh;
     AnhAdapter anhAdapter;
-    TextView btnThemAnh,btnDang;
+    TextView btnThemAnh,btnDang,tvTieuDe;
     EditText edNoiDung;
     ImageView imgBack;
 
@@ -58,16 +58,6 @@ public class DangBaiActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dang_bai);
 
-
-        Intent i = getIntent();
-        idBaiViet = i.getStringExtra("id");
-        if (!idBaiViet.isEmpty()){
-            loadChiTiet();
-        }
-        Log.d("ssssss", "onCreate: "+idBaiViet);
-
-
-
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -78,6 +68,7 @@ public class DangBaiActivity extends AppCompatActivity {
         edNoiDung = findViewById(R.id.edNoiDung);
         btnThemAnh = findViewById(R.id.btnThemAnh);
         btnDang = findViewById(R.id.btnDang);
+        tvTieuDe = findViewById(R.id.tvTieuDe);
         imgBack = findViewById(R.id.imgBack);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,12 +78,19 @@ public class DangBaiActivity extends AppCompatActivity {
         });
         anhAdapter = new AnhAdapter(getApplicationContext());
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL,false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false );
         rvAnh.setLayoutManager(gridLayoutManager);
         rvAnh.setAdapter(anhAdapter);
 
-
+        Intent i = getIntent();
+        if(i.getStringExtra("chucNang").equals("Cập nhật")){
+            idBaiViet = i.getStringExtra("idBaiViet");
+            loadChiTiet(idBaiViet);
+            tvTieuDe.setText("Chỉnh sửa bài viết");
+            btnDang.setText("Cập nhật");
+        }else {
+            Toast.makeText(this, "Tạo bài mới", Toast.LENGTH_SHORT).show();
+        }
 
         btnThemAnh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +107,7 @@ public class DangBaiActivity extends AppCompatActivity {
                 btnDang.setClickable(false);
             }
         });
+
     }
 
     private void upAnhLenServer() {
@@ -260,7 +259,7 @@ public class DangBaiActivity extends AppCompatActivity {
                 });
     }
 
-    private void loadChiTiet(){
+    private void loadChiTiet(String idBaiViet){
         Call<DuLieuTraVe> call = ApiService.apiService.xemChiTiet(idBaiViet);
         call.enqueue(new Callback<DuLieuTraVe>() {
             @Override

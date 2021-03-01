@@ -61,7 +61,9 @@ public class KhamPhaFragment extends Fragment {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), DangBaiActivity.class));
+                Intent i = new Intent(getActivity(),DangBaiActivity.class);
+                i.putExtra("chucNang","Đăng bài");
+                startActivity(i);
             }
         });
         rvBaiViet =  view.findViewById(R.id.rvBaiViet);
