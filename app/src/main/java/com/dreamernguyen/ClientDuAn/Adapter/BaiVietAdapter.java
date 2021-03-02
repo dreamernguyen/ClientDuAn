@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.dreamernguyen.ClientDuAn.ApiService;
+import com.dreamernguyen.ClientDuAn.BaiVietChiTietActivity;
 import com.dreamernguyen.ClientDuAn.DangBaiActivity;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
@@ -58,7 +59,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
 
     @Override
     public void onBindViewHolder(@NonNull BaiVietViewHolder holder, int position) {
-        Collections.shuffle(listBaiViet);
+//        Collections.shuffle(listBaiViet);
         BaiViet baiViet = listBaiViet.get(position);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         Calendar cal = Calendar.getInstance();
@@ -170,6 +171,15 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
                 Toast.makeText(context, "ddd" + baiViet.getId(), Toast.LENGTH_SHORT).show();
             }
         });
+        holder.tvBinhLuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, BaiVietChiTietActivity.class);
+                intent.putExtra("chucNang","Xem");
+                intent.putExtra("idBaiViet", baiViet.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -181,7 +191,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
     }
 
     public class BaiVietViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTenNguoiDung, tvThoiGian, tvNoiDung, tvTrangThai, tvLuotTim;
+        TextView tvTenNguoiDung, tvThoiGian, tvNoiDung, tvTrangThai, tvLuotTim,tvBinhLuan;
         ViewPager vpgAnh;
         ImageView imTuyChinh;
 
@@ -191,6 +201,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
             tvThoiGian = itemView.findViewById(R.id.tvThoiGian);
             tvNoiDung = itemView.findViewById(R.id.tvNoiDung);
             tvLuotTim = itemView.findViewById(R.id.tvTim);
+            tvBinhLuan = itemView.findViewById(R.id.tvBinhLuan);
             tvTrangThai = itemView.findViewById(R.id.tvTrangThai);
             vpgAnh = itemView.findViewById(R.id.vpgImage);
             imTuyChinh = itemView.findViewById(R.id.imTuyChinh);

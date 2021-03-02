@@ -31,10 +31,11 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.BinhLu
         notifyDataSetChanged();
     }
 
+
     @NonNull
     @Override
     public BinhLuanViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_mat_hang, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_binh_luan, parent, false);
         return new BinhLuanViewHolder(view);
     }
 
@@ -42,7 +43,7 @@ public class BinhLuanAdapter extends RecyclerView.Adapter<BinhLuanAdapter.BinhLu
     public void onBindViewHolder(@NonNull BinhLuanViewHolder holder, int position) {
         BinhLuan binhLuan = listBinhLuan.get(position);
 
-        Glide.with(context).load(binhLuan.getIdNguoiDung().getAvatar()).into(holder.imgAvatar);
+//        Glide.with(context).load(binhLuan.getIdNguoiDung().getAvatar()).into(holder.imgAvatar);
         holder.tvTenNguoiDung.setText(binhLuan.getIdNguoiDung().getHoTen());
         holder.tvNoiDung.setText(binhLuan.getNoiDung());
 

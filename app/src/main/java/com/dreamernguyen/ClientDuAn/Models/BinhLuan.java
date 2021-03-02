@@ -10,6 +10,9 @@ public class BinhLuan {
     @SerializedName("idNguoiDung")
     @Expose
     private NguoiDung idNguoiDung;
+    @SerializedName("idBaiViet")
+    @Expose
+    private String idBaiViet;
     @SerializedName("noiDung")
     @Expose
     private String noiDung;
@@ -21,8 +24,8 @@ public class BinhLuan {
     private String thoiGianCapNhat;
 
     //Tạo mới hoặc cập nhật
-    public BinhLuan(NguoiDung idNguoiDung, String noiDung) {
-        this.idNguoiDung = idNguoiDung;
+    public BinhLuan(String idBaiViet, String noiDung) {
+        this.idBaiViet = idBaiViet;
         this.noiDung = noiDung;
     }
 

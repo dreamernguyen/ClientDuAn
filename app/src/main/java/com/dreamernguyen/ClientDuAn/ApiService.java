@@ -1,6 +1,7 @@
 package com.dreamernguyen.ClientDuAn;
 
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.Models.BinhLuan;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.MatHang;
 import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
@@ -52,6 +53,11 @@ public interface ApiService {
 
 
     //Bình luận
+    @POST("binhLuan/them/{id}")
+    Call<DuLieuTraVe> binhLuan(@Path("id") String idNguoiDung,@Body BinhLuan binhLuan);
+    @GET("binhLuan/baiViet/{id}")
+    Call<DuLieuTraVe> danhSachBinhLuan(@Path("id") String idBaiViet);
+
     //Tin nhắn
     @POST("/tinNhan/chat")
     Call<TinNhan> postMessage(@Body TinNhan tinNhan);

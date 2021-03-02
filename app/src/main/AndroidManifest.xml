@@ -12,12 +12,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YoKaFo"
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true">
-        <activity android:name=".DangBaiActivity"></activity>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".BaiVietChiTietActivity"></activity>
+        <activity android:name=".DangBaiActivity" />
 
         <meta-data
             android:name="CLOUDINARY_URL"
