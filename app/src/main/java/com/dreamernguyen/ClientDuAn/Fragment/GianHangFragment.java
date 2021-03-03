@@ -1,91 +1,69 @@
 package com.dreamernguyen.ClientDuAn.Fragment;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.callback.ErrorInfo;
-import com.cloudinary.android.callback.UploadCallback;
-import com.dreamernguyen.ClientDuAn.Adapter.BaiVietAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.dreamernguyen.ClientDuAn.Adapter.MatHangAdapter;
+import com.dreamernguyen.ClientDuAn.ApiService;
+import com.dreamernguyen.ClientDuAn.DangMatHangActivity;
+import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.R;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import gun0912.tedbottompicker.TedBottomPicker;
-import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GianHangFragment extends Fragment {
+    LinearLayout LayoutThemMatHang;
+    RecyclerView rvDanhSach;
+    MatHangAdapter matHangAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view  = inflater.inflate(R.layout.fragment_gian_hang, container, false);
+        View view = inflater.inflate(R.layout.fragment_gian_hang, container, false);
 
+        LayoutThemMatHang = view.findViewById(R.id.LayoutThemMatHang);
+        rvDanhSach = view.findViewById(R.id.rvDanhSach);
+        matHangAdapter = new MatHangAdapter(getActivity());
 
+        LayoutThemMatHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DangMatHangActivity.class);
+                intent.putExtra("chucNang","Đăng hàng");
+                startActivity(intent);
+            }
+        });
+
+        loadMatHang();
+        rvDanhSach.setAdapter(matHangAdapter);
+        rvDanhSach.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         return view;
     }
 
-    public void chooseImage(){
-        TedBottomPicker.with(getActivity())
-                .setPeekHeight(1600)
-                .showTitle(false)
-                .setCompleteButtonText("Xác nhận")
-                .setEmptySelectionText("Không ảnh nào được chọn")
-                .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
-                    @Override
-                    public void onImagesSelected(List<Uri> uriList) {
-                        if(uriList != null && !uriList.isEmpty()){
-                            List<String> listURL = new ArrayList<>();
-                            for(int i = 0 ;i < uriList.size();i++){
-                                Log.d("ooo", "onImagesSelected: "+uriList.get(i));
-                                MediaManager.get().upload(uriList.get(i))
-                                        .unsigned("gybczcnv").callback(new UploadCallback() {
-                                    @Override
-                                    public void onStart(String requestId) {
+    public void loadMatHang() {
+        Call<DuLieuTraVe> call = ApiService.apiService.danhSachMatHang();
+        call.enqueue(new Callback<DuLieuTraVe>() {
+            @Override
+            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+                matHangAdapter.setData(response.body().getDanhSachMatHang());
+            }
 
-                                    }
+            @Override
+            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
 
-                                    @Override
-                                    public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                                    }
-
-                                    @Override
-                                    public void onSuccess(String requestId, Map resultData) {
-                                        Log.d("trave", "onSuccess: "+resultData.get("url"));
-                                        listURL.add(resultData.get("url").toString());
-//                                        photoAdapter.setData(listURL);//bỏ cái adapter ảnh vô đây
-                                        Log.d("--", "onSuccess: "+listURL);
-
-                                    }
-
-                                    @Override
-                                    public void onError(String requestId, ErrorInfo error) {
-
-                                    }
-
-                                    @Override
-                                    public void onReschedule(String requestId, ErrorInfo error) {
-
-                                    }
-                                })
-                                        .dispatch();
-
-
-                            }
-
-                        }
-                    }
-                });
+            }
+        });
     }
+
 }

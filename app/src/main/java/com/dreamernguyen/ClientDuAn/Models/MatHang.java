@@ -38,7 +38,7 @@ public class MatHang {
     private String thoiGianCapNhat;
 
     //Đăng bán
-    public MatHang(String hangMuc, String tieuDe, String noiDung, Integer giaBan,List<String> linkAnh,  String diaChi) {
+    public MatHang(String tieuDe, String noiDung, String hangMuc, Integer giaBan, List<String> linkAnh, String diaChi) {
         this.linkAnh = linkAnh;
         this.hangMuc = hangMuc;
         this.tieuDe = tieuDe;

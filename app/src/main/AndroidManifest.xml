@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.YoKaFo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".BaiVietChiTietActivity"></activity>
+        <activity android:name=".DangMatHangActivity"></activity>
+        <activity android:name=".BaiVietChiTietActivity" />
         <activity android:name=".DangBaiActivity" />
 
         <meta-data
