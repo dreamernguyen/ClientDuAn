@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -19,8 +20,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dreamernguyen.ClientDuAn.Adapter.AnhAdapter;
+import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.MatHang;
 
@@ -41,6 +45,9 @@ public class DangMatHangActivity extends AppCompatActivity {
     List<String> listAnh = new ArrayList<>();
     RecyclerView rvAnh;
     ImageView imgChonAnh;
+    String idMatHang;
+
+    TextView tvTieuDe, tvDangtin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +57,18 @@ public class DangMatHangActivity extends AppCompatActivity {
         KhaiBao();
 
 
-        rvAnh=findViewById(R.id.rvAnh);
+        tvTieuDe = findViewById(R.id.tvTieuDe);
+        tvDangtin = findViewById(R.id.tvDangtin);
+
+
+        tvDangtin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        rvAnh = findViewById(R.id.rvAnh);
         imgChonAnh = findViewById(R.id.imaChonAnh);
 
         Window window = getWindow();
@@ -60,7 +78,7 @@ public class DangMatHangActivity extends AppCompatActivity {
         window.setStatusBarColor(Color.TRANSPARENT);
         anhAdapter = new AnhAdapter(getApplicationContext());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3, RecyclerView.VERTICAL,false );
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL, false);
         rvAnh.setLayoutManager(gridLayoutManager);
 
 
@@ -69,12 +87,60 @@ public class DangMatHangActivity extends AppCompatActivity {
         imgChonAnh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgChonAnh.setVisibility(View.INVISIBLE);
                 chonAnh();
             }
         });
 
+        Intent i = getIntent();
+        if (i.getStringExtra("chucNang").equals("Cập nhật")) {
+            idMatHang = i.getStringExtra("idMatHang");
+            loadChiTiet(idMatHang);
+            tvTieuDe.setText("Chỉnh sửa bài viết");
+            tvDangtin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    capNhatMatHang(listAnh);
+                }
+            });
+            tvDangtin.setText("Cập nhật");
+        } else {
+            tvDangtin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dangMatHang();
+                }
+            });
+            Toast.makeText(this, "Tạo bài mới", Toast.LENGTH_SHORT).show();
+        }
+
     }
+
+    private void loadChiTiet(String idBaiViet) {
+        Call<DuLieuTraVe> call = ApiService.apiService.xemChiTietMatHang(idBaiViet);
+        call.enqueue(new Callback<DuLieuTraVe>() {
+            @Override
+            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+                edNoiDung.setText(response.body().getMatHang().getNoiDung());
+                edTieuDe.setText(response.body().getMatHang().getTieuDe());
+                edGiaBan.setText(response.body().getMatHang().getGiaBan() + "");
+                edDiaChi.setText(response.body().getMatHang().getDiaChi());
+                if (response.body().getMatHang().getLinkAnh() != null) {
+                    Toast.makeText(DangMatHangActivity.this, "Có ảnh nha", Toast.LENGTH_SHORT).show();
+                    listAnh = response.body().getMatHang().getLinkAnh();
+                    anhAdapter.loadAnhCu(listAnh);
+                    Log.d("ndndn", "onResponse: " + response.body().getMatHang().getLinkAnh());
+
+                }
+                Toast.makeText(DangMatHangActivity.this, "Ok r" + response.body().getMatHang().getNoiDung(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+                Toast.makeText(DangMatHangActivity.this, "Lỗi" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     public void KhaiBao() {
         edTieuDe = findViewById(R.id.edTieude);
@@ -88,17 +154,17 @@ public class DangMatHangActivity extends AppCompatActivity {
         finish();
     }
 
-    public void dangMatHang( View view) {
+    public void dangMatHang() {
 
         Integer giaBan = Integer.parseInt(edGiaBan.getText().toString());
 
         String tieuDe = edTieuDe.getText().toString();
-        String noiDung=edNoiDung.getText().toString();
-        String diaChi =edDiaChi.getText().toString();
+        String noiDung = edNoiDung.getText().toString();
+        String diaChi = edDiaChi.getText().toString();
 
         List<String> linkAnh = new ArrayList<>();
         linkAnh.add("https://techland.com.vn/wp-content/uploads/2019/09/dien-thoai-iphone-11-pro-max-3a.jpg");
-        MatHang matHang = new MatHang(tieuDe, noiDung, spnHangMuc.getSelectedItem().toString(), giaBan, linkAnh, diaChi);
+        MatHang matHang = new MatHang(tieuDe, noiDung, spnHangMuc.getSelectedItem().toString(), giaBan, listAnh, diaChi);
 
         Call<DuLieuTraVe> call = ApiService.apiService.dangMatHang("6006875981484b2c7c2176c5", matHang);
         call.enqueue(new Callback<DuLieuTraVe>() {
@@ -114,6 +180,7 @@ public class DangMatHangActivity extends AppCompatActivity {
         });
 
     }
+
     private void chonAnh() {
         TedBottomPicker.with(DangMatHangActivity.this)
                 .setPeekHeight(1600)
@@ -124,16 +191,43 @@ public class DangMatHangActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onImagesSelected(List<Uri> uriList) {
-                        if(uriList != null && !uriList.isEmpty()){
+                        if (uriList != null && !uriList.isEmpty()) {
                             uriList.forEach(uri -> listAnh.add(uri.toString()));
                             anhAdapter.loadAnhCu(listAnh);
 //                            listPath = uriList;
-                            Log.d("cccc", "onImagesSelected: "+listAnh);
+                            Log.d("cccc", "onImagesSelected: " + listAnh);
 
                         }
                     }
                 });
     }
+
+    private void capNhatMatHang(List<String> listURL) {
+
+        Integer giaBan = Integer.parseInt(edGiaBan.getText().toString());
+
+        String tieuDe = edTieuDe.getText().toString();
+        String noiDung = edNoiDung.getText().toString();
+        String diaChi = edDiaChi.getText().toString();
+
+        List<String> linkAnh = new ArrayList<>();
+        linkAnh.add("https://techland.com.vn/wp-content/uploads/2019/09/dien-thoai-iphone-11-pro-max-3a.jpg");
+        MatHang matHang = new MatHang(tieuDe, noiDung, spnHangMuc.getSelectedItem().toString(), giaBan, listURL, diaChi);
+
+        Call<DuLieuTraVe> call = ApiService.apiService.capNhapMatHang(idMatHang, matHang);
+        call.enqueue(new Callback<DuLieuTraVe>() {
+            @Override
+            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+                Toast.makeText(DangMatHangActivity.this, response.body().getThongBao(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+                Toast.makeText(DangMatHangActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
 
 

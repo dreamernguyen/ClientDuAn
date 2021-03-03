@@ -17,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.dreamernguyen.ClientDuAn.ApiService;
 import com.dreamernguyen.ClientDuAn.DangBaiActivity;
+import com.dreamernguyen.ClientDuAn.DangMatHangActivity;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.MatHang;
@@ -110,7 +111,7 @@ public class MatHangAdapter extends RecyclerView.Adapter<MatHangAdapter.MatHangV
                 TextView btnChinhSua = viewDailog.findViewById(R.id.btnChinhSua);
                 TextView btnAn = viewDailog.findViewById(R.id.btnAn);
 
-                if (matHang.getIdNguoiDung().getId().equals("600f0471e214d93278f7af7f")) {
+                if (matHang.getIdNguoiDung().getId().equals("6006875981484b2c7c2176c5")) {
                     btnXoa.setVisibility(View.VISIBLE);
                     btnChinhSua.setVisibility(View.VISIBLE);
                     btnAn.setVisibility(View.GONE);
@@ -141,7 +142,7 @@ public class MatHangAdapter extends RecyclerView.Adapter<MatHangAdapter.MatHangV
                 btnChinhSua.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(context, DangBaiActivity.class);
+                        Intent intent = new Intent(context, DangMatHangActivity.class);
                         intent.putExtra("chucNang","Cập nhật");
                         intent.putExtra("idMatHang", matHang.getId());
                         context.startActivity(intent);

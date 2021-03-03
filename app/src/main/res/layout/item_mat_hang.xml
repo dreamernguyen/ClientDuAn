@@ -13,16 +13,6 @@
         android:layout_height="0dp"
         android:layout_weight="4">
 
-        <TextView
-            android:id="@+id/tvSoAnh"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:gravity="top"
-            android:text="9"
-            android:textColor="@color/black"
-            android:textSize="9sp" />
 
 
         <ImageView
@@ -33,6 +23,16 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp" />
 
+        <TextView
+            android:id="@+id/tvSoAnh"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="top"
+            android:text="9"
+            android:textColor="@color/black"
+            android:textSize="9sp" />
         <ImageView
             android:id="@+id/imgTuyChinh"
             android:layout_width="wrap_content"

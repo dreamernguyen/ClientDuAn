@@ -84,4 +84,9 @@ public interface ApiService {
     @POST("matHang/dangBai/{id}")
     Call<DuLieuTraVe> dangMatHang(@Path("id") String idNguoiDung,@Body MatHang matHang);
 
+    @POST("matHang/chinhSua/{id}")
+    Call<DuLieuTraVe> capNhapMatHang(@Path("id") String idMatHang,@Body MatHang matHang);
+
+    @POST("matHang/chiTiet/{id}")
+    Call<DuLieuTraVe> xemChiTietMatHang(@Path("id") String id);
 }
