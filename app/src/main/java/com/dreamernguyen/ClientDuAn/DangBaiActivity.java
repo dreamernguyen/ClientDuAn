@@ -203,7 +203,7 @@ public class DangBaiActivity extends AppCompatActivity {
 
     private void dangBaiViet(List<String> listURL) {
         BaiViet baiViet = new BaiViet(edNoiDung.getText().toString(),listURL);
-        Call<BaiViet> call = ApiService.apiService.dangBai("6006875981484b2c7c2176c5",baiViet);
+        Call<BaiViet> call = ApiService.apiService.dangBai("600f0435e214d93278f7af7e",baiViet);
         call.enqueue(new Callback<BaiViet>() {
             @Override
             public void onResponse(Call<BaiViet> call, Response<BaiViet> response) {

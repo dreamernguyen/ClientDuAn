@@ -78,7 +78,7 @@ public class DangMatHangActivity extends AppCompatActivity {
         window.setStatusBarColor(Color.TRANSPARENT);
         anhAdapter = new AnhAdapter(getApplicationContext());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 4, RecyclerView.VERTICAL, false);
         rvAnh.setLayoutManager(gridLayoutManager);
 
 

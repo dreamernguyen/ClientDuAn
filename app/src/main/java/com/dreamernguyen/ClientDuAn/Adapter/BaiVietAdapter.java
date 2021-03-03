@@ -124,7 +124,7 @@ public class BaiVietAdapter extends RecyclerView.Adapter<BaiVietAdapter.BaiVietV
                 TextView btnChinhSua = viewDailog.findViewById(R.id.btnChinhSua);
                 TextView btnAn = viewDailog.findViewById(R.id.btnAn);
 
-                if (baiViet.getIdNguoiDung().getId().equals("600f0471e214d93278f7af7f")) {
+                if (baiViet.getIdNguoiDung().getId().equals("600f0435e214d93278f7af7e")) {
                     btnXoa.setVisibility(View.VISIBLE);
                     btnChinhSua.setVisibility(View.VISIBLE);
                 } else {
