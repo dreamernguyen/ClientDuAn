@@ -105,18 +105,10 @@ public class DangMatHangActivity extends AppCompatActivity {
             tvDangtin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    capNhatMatHang(listAnh);
+                    upAnhLenServer();
                 }
             });
             tvDangtin.setText("Cập nhật");
-        } else {
-            tvDangtin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dangMatHang(null);
-                }
-            });
-            Toast.makeText(this, "Tạo bài mới", Toast.LENGTH_SHORT).show();
         }
 
     }
