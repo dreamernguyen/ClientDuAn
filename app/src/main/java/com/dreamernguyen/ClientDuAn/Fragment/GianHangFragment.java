@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dreamernguyen.ClientDuAn.Adapter.MatHangAdapter;
 import com.dreamernguyen.ClientDuAn.ApiService;
-import com.dreamernguyen.ClientDuAn.DangMatHangActivity;
+import com.dreamernguyen.ClientDuAn.Activity.DangMatHangActivity;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.R;
 

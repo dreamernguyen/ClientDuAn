@@ -1,27 +1,27 @@
-package com.dreamernguyen.ClientDuAn;
+package com.dreamernguyen.ClientDuAn.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dreamernguyen.ClientDuAn.Adapter.AnhBaiVietAdapter;
 import com.dreamernguyen.ClientDuAn.Adapter.BinhLuanAdapter;
+import com.dreamernguyen.ClientDuAn.ApiService;
+import com.dreamernguyen.ClientDuAn.LocalDataManager;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.Models.BinhLuan;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
-import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
+import com.dreamernguyen.ClientDuAn.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +39,14 @@ public class BaiVietChiTietActivity extends AppCompatActivity {
     String idBaiViet;
     RecyclerView rvBinhLuan;
     ImageView btnGui;
+
     EditText edBinhLuan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bai_viet_chi_tiet);
+
         tvNoiDung = findViewById(R.id.tvNoiDung);
         tvTenNguoiDung = findViewById(R.id.tvTenNguoiDung);
         vpgAnh = findViewById(R.id.vpgImage);
@@ -121,7 +123,7 @@ public class BaiVietChiTietActivity extends AppCompatActivity {
     }
     private void binhLuan(String idBaiViet){
         BinhLuan binhLuan = new BinhLuan(idBaiViet,edBinhLuan.getText().toString());
-        Call<DuLieuTraVe> call = ApiService.apiService.binhLuan("600f9186587aed14d0b62f46",binhLuan);
+        Call<DuLieuTraVe> call = ApiService.apiService.binhLuan(LocalDataManager.getIdNguoiDung(),binhLuan);
         call.enqueue(new Callback<DuLieuTraVe>() {
             @Override
             public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {

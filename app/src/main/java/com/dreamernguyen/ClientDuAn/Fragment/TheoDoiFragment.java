@@ -19,6 +19,7 @@ import com.dreamernguyen.ClientDuAn.Adapter.BaiVietAdapter;
 import com.dreamernguyen.ClientDuAn.ApiService;
 import com.dreamernguyen.ClientDuAn.Models.Anh;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
 import com.dreamernguyen.ClientDuAn.R;
 
@@ -38,8 +39,29 @@ public class TheoDoiFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_theo_doi, container, false);
-
+        rvBaiViet =  view.findViewById(R.id.rvBaiViet);
+        baiVietAdapter = new BaiVietAdapter(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
+        rvBaiViet.setLayoutManager(linearLayoutManager);
+        rvBaiViet.setAdapter(baiVietAdapter);
+        loadBaiViet();
         return view;
+    }
+    public void loadBaiViet(){
+        Call<DuLieuTraVe> call = ApiService.apiService.danhSachTheoDoi("6006875981484b2c7c2176c5");
+        call.enqueue(new Callback<DuLieuTraVe>() {
+            @Override
+            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+                baiVietAdapter.setData(response.body().getDanhSachBaiViet());
+                Log.d("ppp", "onResponse: "+response.body());
+            }
+
+            @Override
+            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+                Log.d("pppp", "onFailure: "+t.getMessage());
+            }
+        });
+
     }
 
 

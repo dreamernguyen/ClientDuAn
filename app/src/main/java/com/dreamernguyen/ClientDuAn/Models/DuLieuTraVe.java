@@ -18,6 +18,9 @@ public class DuLieuTraVe {
     @SerializedName("danhSachMatHang")
     @Expose
     private List<MatHang> danhSachMatHang = null;
+    @SerializedName("danhSachNguoiDung")
+    @Expose
+    private List<NguoiDung> danhSachNguoiDung = null;
     @SerializedName("baiViet")
     @Expose
     private BaiViet baiViet;
@@ -58,6 +61,13 @@ public class DuLieuTraVe {
 
     public void setDanhSachMatHang(List<MatHang> danhSachMatHang) {
         this.danhSachMatHang = danhSachMatHang;
+    }
+    public List<NguoiDung> getDanhSachNguoiDung() {
+        return danhSachNguoiDung;
+    }
+
+    public void setDanhSachNguoiDung(List<NguoiDung> danhSachNguoiDung) {
+        this.danhSachNguoiDung = danhSachNguoiDung;
     }
 
     public BaiViet getBaiViet() {

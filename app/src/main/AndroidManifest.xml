@@ -10,16 +10,17 @@
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_main"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_main"
         android:supportsRtl="true"
         android:theme="@style/Theme.YoKaFo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DangMatHangActivity"></activity>
-        <activity android:name=".BaiVietChiTietActivity" />
-        <activity android:name=".DangBaiActivity" />
+        <activity android:name=".Activity.NhanTinActivity"></activity>
+        <activity android:name=".Activity.DangMatHangActivity" />
+        <activity android:name=".Activity.BaiVietChiTietActivity" />
+        <activity android:name=".Activity.DangBaiActivity" />
 
         <meta-data
             android:name="CLOUDINARY_URL"

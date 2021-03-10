@@ -1,9 +1,8 @@
-package com.dreamernguyen.ClientDuAn;
+package com.dreamernguyen.ClientDuAn.Activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -17,8 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,9 +24,10 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.dreamernguyen.ClientDuAn.Adapter.AnhAdapter;
-import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.ApiService;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.MatHang;
+import com.dreamernguyen.ClientDuAn.R;
 
 import java.util.ArrayList;
 import java.util.List;

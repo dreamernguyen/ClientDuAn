@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.dreamernguyen.ClientDuAn.ApiService;
-import com.dreamernguyen.ClientDuAn.BaiVietChiTietActivity;
-import com.dreamernguyen.ClientDuAn.DangBaiActivity;
+import com.dreamernguyen.ClientDuAn.Activity.BaiVietChiTietActivity;
+import com.dreamernguyen.ClientDuAn.Activity.DangBaiActivity;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.R;
@@ -26,7 +26,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;

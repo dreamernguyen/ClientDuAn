@@ -30,7 +30,7 @@ public interface ApiService {
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.31.199:3000/")
+            .baseUrl("https://server-du-an.herokuapp.com/") //đang chạy host nếu muốn debug trên visual code thì bỏ localhost vô đây
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -40,6 +40,9 @@ public interface ApiService {
     //Bài viết
     @GET("baiViet/danhSach")
     Call<List<BaiViet>> danhSachBaiViet();
+
+    @GET("baiViet/dangTheoDoi/{id}")
+    Call<DuLieuTraVe> danhSachTheoDoi(@Path("id") String idNguoiDung);
 
     @POST("baiViet/dangBai/{id}")
     Call<BaiViet> dangBai(@Path("id") String idNguoiDung, @Body BaiViet baiViet);
@@ -70,6 +73,17 @@ public interface ApiService {
 
     @GET("tinNhan/danhSach")
     Call<List<TinNhan>> getTest();
+
+    @FormUrlEncoded
+    @POST("tinNhan/troChuyen")
+    Call<List<TinNhan>> danhSachTinNhan(@Field("idNguoi1") String idNguoi1,@Field("idNguoi2") String idNguoi2);
+
+    @FormUrlEncoded
+    @POST("tinNhan/chat")
+    Call<DuLieuTraVe> chat(@Field("idNguoiGui") String idNguoiGui,@Field("idNguoiNhan") String idNguoiNhan,@Field("noiDung") String noiDung);
+
+    @GET("tinNhan/danhSachLienHe/{id}")
+    Call<List<NguoiDung>> danhSachLienHe(@Path("id") String id);
 
     //Mặt hàng
     @POST("matHang/dangBai")

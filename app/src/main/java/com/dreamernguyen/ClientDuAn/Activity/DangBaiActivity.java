@@ -1,13 +1,10 @@
-package com.dreamernguyen.ClientDuAn;
+package com.dreamernguyen.ClientDuAn.Activity;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -17,20 +14,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cloudinary.android.LogLevel;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.dreamernguyen.ClientDuAn.Adapter.AnhAdapter;
-import com.dreamernguyen.ClientDuAn.Adapter.BaiVietAdapter;
+import com.dreamernguyen.ClientDuAn.ApiService;
+import com.dreamernguyen.ClientDuAn.LocalDataManager;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
+import com.dreamernguyen.ClientDuAn.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,7 +200,7 @@ public class DangBaiActivity extends AppCompatActivity {
 
     private void dangBaiViet(List<String> listURL) {
         BaiViet baiViet = new BaiViet(edNoiDung.getText().toString(),listURL);
-        Call<BaiViet> call = ApiService.apiService.dangBai("600f0435e214d93278f7af7e",baiViet);
+        Call<BaiViet> call = ApiService.apiService.dangBai(LocalDataManager.getIdNguoiDung(),baiViet);
         call.enqueue(new Callback<BaiViet>() {
             @Override
             public void onResponse(Call<BaiViet> call, Response<BaiViet> response) {

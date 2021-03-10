@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         window.setStatusBarColor(Color.TRANSPARENT);
 
+        LocalDataManager.setIdNguoiDung("600688a68df31f0984c97de7");
+
 //        Call<NguoiDung> call = ApiService.apiService.theoDoi("6006875981484b2c7c2176c5","600f049ce214d93278f7af80");
 //        call.enqueue(new Callback<NguoiDung>() {
 //            @Override

@@ -12,13 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.dreamernguyen.ClientDuAn.ApiService;
-import com.dreamernguyen.ClientDuAn.DangBaiActivity;
-import com.dreamernguyen.ClientDuAn.DangMatHangActivity;
-import com.dreamernguyen.ClientDuAn.Models.BaiViet;
+import com.dreamernguyen.ClientDuAn.Activity.DangMatHangActivity;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.MatHang;
 import com.dreamernguyen.ClientDuAn.R;

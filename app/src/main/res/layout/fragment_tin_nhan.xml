@@ -4,7 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.TinNhanFragment"
-    android:background="@color/yellow">
-
+    android:orientation="vertical"
+    android:background="@color/Violet">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLienHe"
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
