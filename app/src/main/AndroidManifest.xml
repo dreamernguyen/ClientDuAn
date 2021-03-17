@@ -15,8 +15,17 @@
 =======
         android:theme="@style/Theme.YoKaFo"
         android:usesCleartextTraffic="true">
+<<<<<<< Updated upstream
         <activity android:name=".DangHangActivity"></activity>
         <activity android:name=".DangBaiActivity" />
+=======
+        <activity android:name=".Activity.TimKiemMatHangActivity"></activity>
+        <activity android:name=".Activity.MatHangChiTietActivity" />
+        <activity android:name=".Activity.NhanTinActivity" />
+        <activity android:name=".Activity.DangMatHangActivity" />
+        <activity android:name=".Activity.BaiVietChiTietActivity" />
+        <activity android:name=".Activity.DangBaiActivity" />
+>>>>>>> Stashed changes
 
         <meta-data
             android:name="CLOUDINARY_URL"

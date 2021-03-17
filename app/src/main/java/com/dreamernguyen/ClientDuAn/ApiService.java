@@ -74,4 +74,13 @@ public interface ApiService {
     @POST("matHang/dangBai")
     Call<MatHang> testMatHang(@Path("idNguoiDung") String idNguoiDung, @Body MatHang matHang);
 
+<<<<<<< Updated upstream
+=======
+    @POST("matHang/chiTiet/{id}")
+    Call<DuLieuTraVe> xemChiTietMatHang(@Path("id") String id);
+
+    @POST("matHang/timKiemTieuDe/{id}")
+    Call<DuLieuTraVe> timTieuDeMatHang(@Path("id") String id);
+
+>>>>>>> Stashed changes
 }

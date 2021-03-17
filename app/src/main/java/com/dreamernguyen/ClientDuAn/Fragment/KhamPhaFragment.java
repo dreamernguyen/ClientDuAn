@@ -48,10 +48,7 @@ import retrofit2.Response;
 public class KhamPhaFragment extends Fragment {
     RecyclerView rvBaiViet;
     BaiVietAdapter baiVietAdapter;
-
     TextView tv;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,7 +70,6 @@ public class KhamPhaFragment extends Fragment {
         rvBaiViet.setAdapter(baiVietAdapter);
         loadBaiViet();
         return view;
-
     }
 
     public void loadBaiViet(){
