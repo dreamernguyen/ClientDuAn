@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,25 +21,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.dreamernguyen.ClientDuAn.Adapter.TinNhanAdapter;
 import com.dreamernguyen.ClientDuAn.ApiService;
 import com.dreamernguyen.ClientDuAn.LocalDataManager;
+import com.dreamernguyen.ClientDuAn.MainActivity;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.Models.TinNhan;
 import com.dreamernguyen.ClientDuAn.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import gun0912.tedbottompicker.TedBottomPicker;
+import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NhanTinActivity extends AppCompatActivity {
-    private EditText edMessage;
+    private EditText edTinNhan;
     private TextView tvTenNguoiDung;
-    private Button btnSend;
-    private ImageView btnUpload;
+    private Button btnGui;
+    private ImageView btnUpload,imgBack;
     private static RecyclerView rvChat;
     private static TinNhanAdapter tinNhanAdapter;
     public static List<TinNhan> listTinNhan = new ArrayList<>();
@@ -58,9 +66,16 @@ public class NhanTinActivity extends AppCompatActivity {
         tenNguoiDung = i.getStringExtra("tenNguoiDung");
         tvTenNguoiDung = findViewById(R.id.tvTenNguoiDung);
         tvTenNguoiDung.setText(tenNguoiDung);
-        edMessage = findViewById(R.id.edMessage);
-        btnSend = findViewById(R.id.btnSend);
+        edTinNhan = findViewById(R.id.edTinNhan);
+        btnGui = findViewById(R.id.btnGui);
+        imgBack = findViewById(R.id.imgBack);
         btnUpload = findViewById(R.id.btnUpload);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guiAnh();
+            }
+        });
         rvChat = findViewById(R.id.rvChat);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -69,16 +84,27 @@ public class NhanTinActivity extends AppCompatActivity {
         tinNhanAdapter = new TinNhanAdapter(getApplicationContext());
         rvChat.setAdapter(tinNhanAdapter);
         loadTinNhan();
-        edMessage.setOnClickListener(new View.OnClickListener() {
+        edTinNhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkKeyboard();
             }
         });
-        btnSend.setOnClickListener(new View.OnClickListener() {
+        btnGui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                guiTinNhan(edMessage.getText().toString());
+                if(edTinNhan.getText().toString().trim().length() > 0){
+                    guiTinNhan(edTinNhan.getText().toString());
+                }else {
+                    Toast.makeText(NhanTinActivity.this, "Không để trống tin nhắn !", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -108,7 +134,7 @@ public class NhanTinActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<TinNhan>> call, Response<List<TinNhan>> response) {
                 listTinNhan = response.body();
-//                tinNhanAdapter.setData(listTinNhan);
+                tinNhanAdapter.setData(listTinNhan);
                 if(listTinNhan.size() > 0){
                     rvChat.scrollToPosition(listTinNhan.size() - 1);
                 }
@@ -123,9 +149,10 @@ public class NhanTinActivity extends AppCompatActivity {
     }
 
     private void guiTinNhan(String noiDung){
+        edTinNhan.setText("");
         String idNguoiDung = LocalDataManager.getIdNguoiDung();
         Log.d("bbb", "guiTinNhan: "+idNguoiDung);
-        Call<DuLieuTraVe> call = ApiService.apiService.chat(idNguoiDung,idLienHe,noiDung);
+        Call<DuLieuTraVe> call = ApiService.apiService.chat(idNguoiDung,idLienHe,noiDung,"");
         call.enqueue(new Callback<DuLieuTraVe>() {
             @Override
             public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
@@ -140,4 +167,77 @@ public class NhanTinActivity extends AppCompatActivity {
         });
     }
 
+    private void guiAnh(){
+        TedBottomPicker.with(this)
+                .setPeekHeight(1600)
+                .showTitle(false)
+                .setCompleteButtonText("Xác nhận")
+                .setEmptySelectionText("Không ảnh nào được chọn")
+                .show(new TedBottomSheetDialogFragment.OnImageSelectedListener() {
+                    @Override
+                    public void onImageSelected(Uri uri) {
+                        MediaManager.get().upload(uri)
+                                .unsigned("gybczcnv").callback(new UploadCallback() {
+                            @Override
+                            public void onStart(String requestId) {
+
+                            }
+
+                            @Override
+                            public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(String requestId, Map resultData) {
+                                Log.d("trave", "onSuccess: " + resultData.get("url"));
+                                String linkAnh = resultData.get("url").toString();
+                                Call<DuLieuTraVe> call = ApiService.apiService.chat(LocalDataManager.getIdNguoiDung(), idLienHe, "", linkAnh);
+                                call.enqueue(new Callback<DuLieuTraVe>() {
+                                    @Override
+                                    public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+//                                        TinNhan tinNhan1 = response.body();
+//                                        Log.d("abc", "onResponse: " + tinNhan1.getNoiDung());
+//                                        listTinNhan.add(tinNhan1);
+//                                        messageAdapter.notifyDataSetChanged();
+//                                        rvChat.scrollToPosition(listTinNhan.size()-1);
+//                                        edMessage.setText("");
+                                        loadTinNhan();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+                                        Log.d("loi", "onFailure: " + t.getMessage());
+                                    }
+                                });
+//                                listTinNhan.add(new TinNhan("","","",uri.toString()));
+//                                messageAdapter.notifyDataSetChanged();
+//                                rvChat.scrollToPosition(listTinNhan.size()-1);
+
+                            }
+
+                            @Override
+                            public void onError(String requestId, ErrorInfo error) {
+
+                            }
+
+                            @Override
+                            public void onReschedule(String requestId, ErrorInfo error) {
+
+                            }
+                        })
+                                .dispatch();
+                    }
+
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(NhanTinActivity.this, MainActivity.class);
+        intent.putExtra("chucNang","TinNhanBack");
+        startActivity(intent);
+        finish();
+    }
 }

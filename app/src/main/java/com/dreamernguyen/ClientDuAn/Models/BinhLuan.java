@@ -4,14 +4,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class BinhLuan {
-
-
     @SerializedName("_id")
     @Expose
     private String id;
     @SerializedName("idNguoiDung")
     @Expose
-    private String idNguoiDung;
+    private NguoiDung idNguoiDung;
+    @SerializedName("idBaiViet")
+    @Expose
+    private String idBaiViet;
     @SerializedName("noiDung")
     @Expose
     private String noiDung;
@@ -22,6 +23,12 @@ public class BinhLuan {
     @Expose
     private String thoiGianCapNhat;
 
+    //Tạo mới hoặc cập nhật
+    public BinhLuan(String idBaiViet, String noiDung) {
+        this.idBaiViet = idBaiViet;
+        this.noiDung = noiDung;
+    }
+
     public String getId() {
         return id;
     }
@@ -30,11 +37,11 @@ public class BinhLuan {
         this.id = id;
     }
 
-    public String getIdNguoiDung() {
+    public NguoiDung getIdNguoiDung() {
         return idNguoiDung;
     }
 
-    public void setIdNguoiDung(String idNguoiDung) {
+    public void setIdNguoiDung(NguoiDung idNguoiDung) {
         this.idNguoiDung = idNguoiDung;
     }
 

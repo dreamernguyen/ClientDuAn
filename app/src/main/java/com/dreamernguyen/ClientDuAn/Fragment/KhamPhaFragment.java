@@ -1,45 +1,30 @@
 package com.dreamernguyen.ClientDuAn.Fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.cloudinary.android.MediaManager;
-import com.cloudinary.android.callback.ErrorInfo;
-import com.cloudinary.android.callback.UploadCallback;
-import com.dreamernguyen.ClientDuAn.Adapter.AnhAdapter;
 import com.dreamernguyen.ClientDuAn.Adapter.BaiVietAdapter;
 import com.dreamernguyen.ClientDuAn.ApiService;
-import com.dreamernguyen.ClientDuAn.DangBaiActivity;
+import com.dreamernguyen.ClientDuAn.Activity.DangBaiActivity;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.R;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import gun0912.tedbottompicker.TedBottomPicker;
-import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,12 +33,19 @@ import retrofit2.Response;
 public class KhamPhaFragment extends Fragment {
     RecyclerView rvBaiViet;
     BaiVietAdapter baiVietAdapter;
+    SwipeRefreshLayout refreshLayout;
     TextView tv;
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_kham_pha, container, false);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+
         tv = view.findViewById(R.id.tv1);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,9 +61,22 @@ public class KhamPhaFragment extends Fragment {
         rvBaiViet.setLayoutManager(linearLayoutManager);
         rvBaiViet.setAdapter(baiVietAdapter);
         loadBaiViet();
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadBaiViet();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setRefreshing(false);
+                    }
+                },3000);
+            }
+        });
         return view;
-    }
 
+    }
     public void loadBaiViet(){
         Call<List<BaiViet>> call = ApiService.apiService.danhSachBaiViet();
         call.enqueue(new Callback<List<BaiViet>>() {
@@ -83,6 +88,7 @@ public class KhamPhaFragment extends Fragment {
                 Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung().getHoTen());
 //                Toast.makeText(getActivity(), ""+ response.body().size(), Toast.LENGTH_SHORT).show();
                 baiVietAdapter.setData(response.body());
+                baiVietAdapter.random();
             }
             @Override
             public void onFailure(Call<List<BaiViet>> call, Throwable t) {

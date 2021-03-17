@@ -6,13 +6,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class NguoiDung {
-
+    public NguoiDung() {
+    }
+    @SerializedName("avatar")
+    @Expose
+    private String avatar;
     @SerializedName("dangTheoDoi")
     @Expose
-    private List<NguoiDung> dangTheoDoi = null;
+    private List<Object> dangTheoDoi = null;
     @SerializedName("duocTheoDoi")
     @Expose
-    private List<NguoiDung> duocTheoDoi = null;
+    private List<Object> duocTheoDoi = null;
     @SerializedName("_id")
     @Expose
     private String id;
@@ -41,19 +45,42 @@ public class NguoiDung {
     @Expose
     private String diaChi;
 
-    public List<NguoiDung> getDangTheoDoi() {
+
+    public NguoiDung(int sdt, String matKhau) {
+        this.sdt = sdt;
+        this.matKhau = matKhau ;
+    }
+
+    //Đăng ký
+    public NguoiDung(String email, String matKhau, String hoTen, Integer sdt) {
+        this.email = email;
+        this.matKhau = matKhau;
+        this.hoTen = hoTen;
+        this.sdt = sdt;
+    }
+    //Cập nhật thông tin
+    public NguoiDung(String email, String matKhau, String hoTen, Integer sdt, Integer tuoi, String diaChi) {
+        this.email = email;
+        this.matKhau = matKhau;
+        this.hoTen = hoTen;
+        this.sdt = sdt;
+        this.tuoi = tuoi;
+        this.diaChi = diaChi;
+    }
+
+    public List<Object> getDangTheoDoi() {
         return dangTheoDoi;
     }
 
-    public void setDangTheoDoi(List<NguoiDung> dangTheoDoi) {
+    public void setDangTheoDoi(List<Object> dangTheoDoi) {
         this.dangTheoDoi = dangTheoDoi;
     }
 
-    public List<NguoiDung> getDuocTheoDoi() {
+    public List<Object> getDuocTheoDoi() {
         return duocTheoDoi;
     }
 
-    public void setDuocTheoDoi(List<NguoiDung> duocTheoDoi) {
+    public void setDuocTheoDoi(List<Object> duocTheoDoi) {
         this.duocTheoDoi = duocTheoDoi;
     }
 
@@ -96,6 +123,15 @@ public class NguoiDung {
     public void setThoiGianTao(String thoiGianTao) {
         this.thoiGianTao = thoiGianTao;
     }
+
+    public String getThoiGianCapNhat() {
+        return thoiGianCapNhat;
+    }
+
+    public void setThoiGianCapNhat(String thoiGianCapNhat) {
+        this.thoiGianCapNhat = thoiGianCapNhat;
+    }
+
     public Integer getSdt() {
         return sdt;
     }
@@ -120,12 +156,11 @@ public class NguoiDung {
         this.diaChi = diaChi;
     }
 
-
-    public String getThoiGianCapNhat() {
-        return thoiGianCapNhat;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setThoiGianCapNhat(String thoiGianCapNhat) {
-        this.thoiGianCapNhat = thoiGianCapNhat;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

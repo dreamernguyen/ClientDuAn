@@ -1,5 +1,6 @@
 package com.dreamernguyen.ClientDuAn.Activity;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,6 +29,8 @@ import com.dreamernguyen.ClientDuAn.LocalDataManager;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
 import com.dreamernguyen.ClientDuAn.R;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +69,12 @@ public class DangBaiActivity extends AppCompatActivity {
         btnThemAnh = findViewById(R.id.btnThemAnh);
         btnDang = findViewById(R.id.btnDang);
         tvTieuDe = findViewById(R.id.tvTieuDe);
+        tvTieuDe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quetQR();
+            }
+        });
         imgBack = findViewById(R.id.imgBack);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,12 +121,6 @@ public class DangBaiActivity extends AppCompatActivity {
         String regex = "(http://|https://|www\\.)([^ '\"]*)";
         List<String> anhCu = new ArrayList<>();
         List<Uri> anhMoi = new ArrayList<>();
-//        Pattern pattern = Pattern.compile(regex);
-//        for (int i = 0; i < listAnhCu.size(); i ++){
-//            if(!pattern.matcher(listAnhCu.get(i)).matches()){
-//                listPath.add(Uri.parse(listAnhCu.get(i)));
-//            }
-//        }
         listPath.clear();
         for (String uri : listAnh){
             if(!Pattern.compile(regex).matcher(uri).matches()){
@@ -136,60 +139,65 @@ public class DangBaiActivity extends AppCompatActivity {
 
             Log.d("oooo", "onClick: "+listPath);
             List<String> listURL = new ArrayList<>();
-            for(int i = 0 ;i < anhMoi.size();i++){
-                Log.d("ooo", "onImagesSelected: "+anhMoi.get(i));
-                MediaManager.get().upload(anhMoi.get(i))
-                        .unsigned("gybczcnv").callback(new UploadCallback() {
-                    @Override
-                    public void onStart(String requestId) {
+            if(anhMoi.size() == 0){
+                capNhatBaiViet(listAnh);
+            }else {
+                for(int i = 0 ;i < anhMoi.size();i++){
+                    Log.d("ooo", "onImagesSelected: "+anhMoi.get(i));
+                    MediaManager.get().upload(anhMoi.get(i))
+                            .unsigned("gybczcnv").callback(new UploadCallback() {
+                        @Override
+                        public void onStart(String requestId) {
 
-                    }
-
-                    @Override
-                    public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(String requestId, Map resultData) {
-                        Log.d("trave", "onSuccess: "+resultData.get("url"));
-
-                        if(idBaiViet == null){
-                            listURL.add(resultData.get("url").toString());
-                            Log.d("--", "onSuccess: "+listURL);
-                            if(listURL.size() == anhMoi.size()){
-                                Log.d("cuoicungroiuii", "loadAnh: "+listURL);
-
-
-                            }
-                            dangBaiViet(listURL);
-                            Log.d("Hihi", "onSuccess: Đăng bài viết");
                         }
-                        else {
-                            listURL.add(resultData.get("url").toString());
-                            Log.d("--", "onSuccess: "+anhCu);
-                            if(listURL.size() == anhMoi.size()){
-                                Log.d("cuoicungroiuii", "loadAnh: "+listURL);
-                                listURL.addAll(anhCu);
 
-                            }
-                            capNhatBaiViet(listURL);
-                            Log.d("Hihi", "onSuccess: Cập nhật bài viết");
+                        @Override
+                        public void onProgress(String requestId, long bytes, long totalBytes) {
+
                         }
-                    }
 
-                    @Override
-                    public void onError(String requestId, ErrorInfo error) {
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            Log.d("trave", "onSuccess: "+resultData.get("url"));
 
-                    }
+                            if(idBaiViet == null){
+                                listURL.add(resultData.get("url").toString());
+                                Log.d("--", "onSuccess: "+listURL);
+                                if(listURL.size() == anhMoi.size()){
+                                    Log.d("cuoicungroiuii", "loadAnh: "+listURL);
 
-                    @Override
-                    public void onReschedule(String requestId, ErrorInfo error) {
 
-                    }
-                }).dispatch();
+                                }
+                                dangBaiViet(listURL);
+                                Log.d("Hihi", "onSuccess: Đăng bài viết");
+                            }
+                            else {
+                                listURL.add(resultData.get("url").toString());
+                                Log.d("--", "onSuccess: "+anhCu);
+                                if(listURL.size() == anhMoi.size()){
+                                    Log.d("cuoicungroiuii", "loadAnh: "+listURL);
+                                    listURL.addAll(anhCu);
 
+                                }
+                                capNhatBaiViet(listURL);
+                                Log.d("Hihi", "onSuccess: Cập nhật bài viết");
+                            }
+                        }
+
+                        @Override
+                        public void onError(String requestId, ErrorInfo error) {
+
+                        }
+
+                        @Override
+                        public void onReschedule(String requestId, ErrorInfo error) {
+
+                        }
+                    }).dispatch();
+
+                }
             }
+
         }
         else {
             Log.d("ddd", "upAnhLenServer: Không có ảnh");
@@ -225,6 +233,7 @@ public class DangBaiActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
                 Toast.makeText(DangBaiActivity.this, response.body().getThongBao(), Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
@@ -242,14 +251,11 @@ public class DangBaiActivity extends AppCompatActivity {
                 .setCompleteButtonText("Xác nhận")
                 .setEmptySelectionText("Không ảnh nào được chọn")
                 .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onImagesSelected(List<Uri> uriList) {
                         if(uriList != null && !uriList.isEmpty()){
-
-                            for (int i =0; i<uriList.size();i++){
-                                listAnh.add(uriList.get(i).toString());
-                            }
-
+                            uriList.forEach(uri -> listAnh.add(uri.toString()));
                             anhAdapter.loadAnhCu(listAnh);
 //                            listPath = uriList;
                             Log.d("cccc", "onImagesSelected: "+listAnh);
@@ -282,5 +288,26 @@ public class DangBaiActivity extends AppCompatActivity {
         });
     }
 
+    private void quetQR(){
+        IntentIntegrator integrator = new IntentIntegrator(this);
+//        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+        integrator.setPrompt("Scan a barcode");
+//        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.setBeepEnabled(true);
+//        integrator.setBarcodeImageEnabled(true);
+        integrator.setOrientationLocked(true);
+        integrator.setCaptureActivity(QuetQR.class);
+        integrator.initiateScan();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data );
+        if(intentResult.getContents() != null){
+            Toast.makeText(this, "Đọc thành công "+intentResult.getContents(), Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "Đọc thất bại ", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class BaiViet {
-
-
     @SerializedName("linkAnh")
     @Expose
     private List<String> linkAnh = null;
@@ -17,6 +15,9 @@ public class BaiViet {
     @SerializedName("trangThai")
     @Expose
     private Boolean trangThai;
+    @SerializedName("_id")
+    @Expose
+    private String id;
     @SerializedName("idNguoiDung")
     @Expose
     private NguoiDung idNguoiDung;
@@ -29,6 +30,13 @@ public class BaiViet {
     @SerializedName("thoiGianCapNhat")
     @Expose
     private String thoiGianCapNhat;
+    //Đăng bài
+    public BaiViet(String noiDung,List<String> linkAnh) {
+        this.noiDung = noiDung;
+        this.linkAnh = linkAnh;
+    }
+
+
 
     public List<String> getLinkAnh() {
         return linkAnh;
@@ -52,6 +60,14 @@ public class BaiViet {
 
     public void setTrangThai(Boolean trangThai) {
         this.trangThai = trangThai;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public NguoiDung getIdNguoiDung() {
@@ -85,11 +101,4 @@ public class BaiViet {
     public void setThoiGianCapNhat(String thoiGianCapNhat) {
         this.thoiGianCapNhat = thoiGianCapNhat;
     }
-
-
-    public BaiViet(List<String> linkAnh, String noiDung) {
-        this.linkAnh = linkAnh;
-        this.noiDung = noiDung;
-    }
 }
-

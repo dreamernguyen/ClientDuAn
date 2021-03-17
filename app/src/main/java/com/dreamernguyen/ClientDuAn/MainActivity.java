@@ -1,99 +1,66 @@
 package com.dreamernguyen.ClientDuAn;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
+import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.cloudinary.android.LogLevel;
+import com.cloudinary.android.MediaManager;
+import com.dreamernguyen.ClientDuAn.Adapter.BottomNavAdapter;
+import com.dreamernguyen.ClientDuAn.Fragment.CaNhanFragment;
+import com.dreamernguyen.ClientDuAn.Fragment.GianHangFragment;
+import com.dreamernguyen.ClientDuAn.Fragment.ThongBaoFragment;
+import com.dreamernguyen.ClientDuAn.Fragment.TinNhanFragment;
+import com.dreamernguyen.ClientDuAn.Fragment.TrangChuFragment;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
-import com.dreamernguyen.ClientDuAn.Models.BinhLuan;
+import com.dreamernguyen.ClientDuAn.Models.DuLieuTraVe;
+import com.dreamernguyen.ClientDuAn.Models.MatHang;
 import com.dreamernguyen.ClientDuAn.Models.NguoiDung;
-import com.dreamernguyen.ClientDuAn.Models.ResponseData;
-import com.dreamernguyen.ClientDuAn.Retrofit.ApiInterface;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    TextView textView;
-    ApiInterface apiInterface;
-    CustomCall customCall;
+    private BottomNavigationView bottomNavigationView;
+    private BottomNavAdapter viewPagerAdapter;
+    private ViewPager viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<String> linkAnh = null;
-        textView = findViewById(R.id.tv);
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        Log.d("TAG", "onResponse: ");
-
-
-        customCall = new CustomCall();
-//     
-
-
-<<<<<<< Updated upstream
-=======
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         window.setStatusBarColor(Color.TRANSPARENT);
 
-        LocalDataManager.setIdNguoiDung("6006875981484b2c7c2176c5");
 
-//        Call<NguoiDung> call = ApiService.apiService.theoDoi("6006875981484b2c7c2176c5","600f049ce214d93278f7af80");
-//        call.enqueue(new Callback<NguoiDung>() {
-//            @Override
-//            public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
-//                Log.d("pppp", "onResponse: "+response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<NguoiDung> call, Throwable t) {
-//                Log.d("pppp", "onResponse: "+t.getMessage());
-//
-//            }
-//        });
-//                Call<NguoiDung> call = ApiService.apiService.huyTheoDoi("6006875981484b2c7c2176c5","6006cc0993c6f01ff478ede2");
-//        call.enqueue(new Callback<NguoiDung>() {
-//            @Override
-//            public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
-//                Log.d("pppp", "onResponse: "+response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<NguoiDung> call, Throwable t) {
-//                Log.d("pppp", "onResponse: "+t.getMessage());
-//
-//            }
-//        });
 
-//        Call<DuLieuTraVe> call2 = ApiService.apiService.baiVietTheoDoi("6006875981484b2c7c2176c5");
-//        call2.enqueue(new Callback<DuLieuTraVe>() {
-//            @Override
-//            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
-//                Log.d("ppppp", "onResponse: "+response.body().getDanhSachBaiViet());
-//                Log.d("aaaa", "onResponse: "+response.body().getDanhSachBaiViet().size());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
-//                Log.d("vvv", "onFailure: "+t.getMessage());
-//
-//            }
-//        });
+//        LocalDataManager.setIdNguoiDung("600688a68df31f0984c97de7");
+        loadTrangCaNhan();
+
         viewPager = findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(4);
         bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -164,13 +131,29 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
->>>>>>> Stashed changes
-
+        Intent i = getIntent();
+        if(i.getExtras() != null){
+            if(i.getStringExtra("chucNang").equals("TinNhanBack")){
+                viewPager.setCurrentItem(2);
+                bottomNavigationView.getMenu().findItem(R.id.tinNhan).setChecked(true);
+            }
+        }
 
     }
+    private void loadTrangCaNhan(){
+        Call<DuLieuTraVe> call = ApiService.apiService.xemTrangCaNhan(LocalDataManager.getIdNguoiDung());
+        call.enqueue(new Callback<DuLieuTraVe>() {
+            @Override
+            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+                NguoiDung nguoiDung = response.body().getNguoiDung();
+                LocalDataManager.setNguoiDung(nguoiDung);
 
-    public void test(View view) {
+            }
 
+            @Override
+            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
 }

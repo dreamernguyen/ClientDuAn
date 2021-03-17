@@ -21,63 +21,60 @@ import java.net.URL;
 import java.util.List;
 
 public class AnhAdapter extends RecyclerView.Adapter<AnhAdapter.AnhViewHolder> {
-    private Context context;
-    private List<Uri> listAnh;
-    private List<String> listAnhCu;
+private Context context;
+private List<Uri> listAnh;
+private List<String> listAnhCu;
 
-    public AnhAdapter(Context context) {
+public AnhAdapter(Context context) {
         this.context = context;
-    }
+        }
 
-    public void setData(List<Uri> list) {
+public void setData(List<Uri> list) {
         this.listAnh = list;
         notifyDataSetChanged();
-    }
-
-
-    public void loadAnhCu(List<String> list) {
-        this.listAnhCu = list;
-        notifyDataSetChanged();
-    }
-
-    @NonNull
-    @Override
-    public AnhViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        }
+public void loadAnhCu(List<String> list){
+    this.listAnhCu = list;
+    notifyDataSetChanged();
+}
+@NonNull
+@Override
+public AnhViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_anh, parent, false);
         return new AnhViewHolder(view);
-    }
+        }
 
-    @Override
-    public void onBindViewHolder(@NonNull AnhViewHolder holder, int position) {
+@Override
+public void onBindViewHolder(@NonNull AnhViewHolder holder, int position) {
 //        Glide.with(context).load(listAnh.get(position)).into(holder.imgBaiViet);
         Glide.with(context).load(listAnhCu.get(position)).into(holder.imgBaiViet);
         holder.xoa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listAnhCu.remove(position);
-                notifyItemRemoved(position);
-                notifyDataSetChanged();
-            }
-        });
-    }
+        @Override
+        public void onClick(View v) {
+        listAnhCu.remove(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
+        }
+});
+        }
 
 
-    @Override
-    public int getItemCount() {
+@Override
+public int getItemCount() {
         if (listAnhCu != null) {
-            return listAnhCu.size();
+        return listAnhCu.size();
         }
         return 0;
-    }
-
-    public class AnhViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgBaiViet, xoa;
-
-
-        public AnhViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgBaiViet = itemView.findViewById(R.id.imBaiViet);
-            xoa = itemView.findViewById(R.id.xoa);
         }
+
+public class AnhViewHolder extends RecyclerView.ViewHolder {
+    ImageView imgBaiViet,xoa;
+
+
+    public AnhViewHolder(@NonNull View itemView) {
+        super(itemView);
+        imgBaiViet = itemView.findViewById(R.id.imBaiViet);
+        xoa = itemView.findViewById(R.id.xoa);
     }
+}
 }

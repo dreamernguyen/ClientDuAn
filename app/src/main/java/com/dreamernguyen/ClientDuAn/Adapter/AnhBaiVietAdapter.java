@@ -1,23 +1,32 @@
 package com.dreamernguyen.ClientDuAn.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.dreamernguyen.ClientDuAn.AnhChiTietActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnhBaiVietAdapter extends PagerAdapter {
-    Context context;
     List<String> mlistanh;
+    Boolean fullImage;
 
 //    public AnhBaiVietAdapter(BaiVietAdapter context, List<String> mlistanh) {}
-    public AnhBaiVietAdapter(List<String> mlistanh) {
+    public AnhBaiVietAdapter(List<String> mlistanh,Boolean fullImage ) {
+        this.fullImage = fullImage;
             this.mlistanh = mlistanh;
         }
 
@@ -25,10 +34,35 @@ public class AnhBaiVietAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         final Context context = container.getContext();
-        final AppCompatImageView imageView = new AppCompatImageView(context);
+        final ImageView imageView = new ImageView(context);
+
         container.addView(imageView);
         // Load ảnh vào ImageView bằng Glide
-        Glide.with(context).load(mlistanh.get(position)).into(imageView);
+
+        if(fullImage){
+            Glide.with(context).load(mlistanh.get(position)).into(imageView);
+
+        }else {
+            Glide.with(context).load(mlistanh.get(position)).centerCrop().into(imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("TAG", "instantiateItem: "+mlistanh.get(position));
+                            Intent i = new Intent(context, AnhChiTietActivity.class);
+                            i.putExtra("pos",position);
+                            i.putStringArrayListExtra("listAnh", (ArrayList<String>) mlistanh);
+                            context.startActivity(i);
+                        }
+                    });
+                }
+            });
+        }
+
+
+
         return imageView;
     }
 
