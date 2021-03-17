@@ -15,7 +15,7 @@
         android:paddingTop="10dp"
         app:tabTextAppearance="@style/CustomTabLayout"
         app:tabMode="scrollable"
-        android:background="@color/red"/>
+        android:background="@color/DodgerBlue"/>
     <androidx.viewpager.widget.ViewPager
         android:layout_below="@id/tab_layout"
         android:id="@+id/home_viewpager"

@@ -46,9 +46,9 @@ public class NguoiDung {
     private String diaChi;
 
 
-    public NguoiDung(String id, String email) {
-        this.id = id;
-        this.email = email;
+    public NguoiDung(int sdt, String matKhau) {
+        this.sdt = sdt;
+        this.matKhau = matKhau ;
     }
 
     //Đăng ký

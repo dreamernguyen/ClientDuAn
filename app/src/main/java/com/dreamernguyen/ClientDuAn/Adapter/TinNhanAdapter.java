@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.dreamernguyen.ClientDuAn.Models.TinNhan;
 import com.dreamernguyen.ClientDuAn.R;
 
@@ -61,16 +62,16 @@ public class TinNhanAdapter extends  RecyclerView.Adapter<TinNhanAdapter.TinNhan
         Log.d("fff", "onBindViewHolder: "+ tinNhan.getNoiDung());
         holder.tvChat.setText(tinNhan.getNoiDung());
         holder.imageView.setVisibility(View.GONE);
-//        if(tinNhan.getLinkAnh()){
-//            holder.tvChat.setText(tinNhan.getNoiDung());
-//            holder.imageView.setVisibility(View.GONE);
-//        }
-//        if(!tinNhan.getLinkAnh().equals("")){
-//            holder.imageView.setVisibility(View.VISIBLE);
-//            Log.d("cccc", "onBindViewHolder: "+tinNhan.getLinkAnh());
-//            Uri uri = Uri.parse(tinNhan.getLinkAnh());
-//            Glide.with(context).load(uri).into(holder.imageView);
-//        }
+        if(tinNhan.getLinkAnh().trim().length() == 0){
+            holder.tvChat.setText(tinNhan.getNoiDung());
+            holder.tvChat.setVisibility(View.VISIBLE);
+            holder.imageView.setVisibility(View.GONE);
+        }else {
+            holder.tvChat.setVisibility(View.GONE);
+            holder.imageView.setVisibility(View.VISIBLE);
+            Log.d("cccc", "onBindViewHolder: "+tinNhan.getLinkAnh());
+            Glide.with(context).load(tinNhan.getLinkAnh()).into(holder.imageView);
+        }
 
     }
 

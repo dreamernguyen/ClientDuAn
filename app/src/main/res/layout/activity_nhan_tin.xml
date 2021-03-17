@@ -57,7 +57,7 @@
         android:layout_alignParentBottom="true">
 
         <EditText
-            android:id="@+id/edMessage"
+            android:id="@+id/edTinNhan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
@@ -76,10 +76,10 @@
             android:layout_margin="2dp"
             android:src="@drawable/ic_gallery"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/btnSend"
+            android:layout_toStartOf="@id/btnGui"
             app:tint="@color/CornflowerBlue" />
         <Button
-            android:id="@+id/btnSend"
+            android:id="@+id/btnGui"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gửi"

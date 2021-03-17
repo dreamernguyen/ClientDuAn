@@ -1,5 +1,6 @@
 package com.dreamernguyen.ClientDuAn.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -55,6 +56,8 @@ public class NguoiDungAdapter extends  RecyclerView.Adapter<NguoiDungAdapter.Ngu
                 intent.putExtra("idNguoiDung", nguoiDung.getId());
                 intent.putExtra("tenNguoiDung", nguoiDung.getHoTen());
                 context.startActivity(intent);
+                ((Activity)context).finish();
+
             }
         });
 //        holder.tvNoiDung.setText(binhLuan.getNoiDung());

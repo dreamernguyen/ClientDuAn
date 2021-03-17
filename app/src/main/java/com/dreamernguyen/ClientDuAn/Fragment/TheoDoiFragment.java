@@ -6,7 +6,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,17 +36,32 @@ import retrofit2.Response;
 public class TheoDoiFragment extends Fragment {
     RecyclerView rvBaiViet;
     BaiVietAdapter baiVietAdapter;
+    SwipeRefreshLayout refreshLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_theo_doi, container, false);
         rvBaiViet =  view.findViewById(R.id.rvBaiViet);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
         baiVietAdapter = new BaiVietAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false);
         rvBaiViet.setLayoutManager(linearLayoutManager);
         rvBaiViet.setAdapter(baiVietAdapter);
         loadBaiViet();
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadBaiViet();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setRefreshing(false);
+                    }
+                },3000);
+            }
+        });
         return view;
     }
     public void loadBaiViet(){

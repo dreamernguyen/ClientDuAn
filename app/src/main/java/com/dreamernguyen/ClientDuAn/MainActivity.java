@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.cloudinary.android.LogLevel;
 import com.cloudinary.android.MediaManager;
 import com.dreamernguyen.ClientDuAn.Adapter.BottomNavAdapter;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavAdapter viewPagerAdapter;
     private ViewPager viewPager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,49 +56,11 @@ public class MainActivity extends AppCompatActivity {
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         window.setStatusBarColor(Color.TRANSPARENT);
 
-        LocalDataManager.setIdNguoiDung("600688a68df31f0984c97de7");
 
-//        Call<NguoiDung> call = ApiService.apiService.theoDoi("6006875981484b2c7c2176c5","600f049ce214d93278f7af80");
-//        call.enqueue(new Callback<NguoiDung>() {
-//            @Override
-//            public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
-//                Log.d("pppp", "onResponse: "+response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<NguoiDung> call, Throwable t) {
-//                Log.d("pppp", "onResponse: "+t.getMessage());
-//
-//            }
-//        });
-//                Call<NguoiDung> call = ApiService.apiService.huyTheoDoi("6006875981484b2c7c2176c5","6006cc0993c6f01ff478ede2");
-//        call.enqueue(new Callback<NguoiDung>() {
-//            @Override
-//            public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
-//                Log.d("pppp", "onResponse: "+response.body());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<NguoiDung> call, Throwable t) {
-//                Log.d("pppp", "onResponse: "+t.getMessage());
-//
-//            }
-//        });
 
-//        Call<DuLieuTraVe> call2 = ApiService.apiService.baiVietTheoDoi("6006875981484b2c7c2176c5");
-//        call2.enqueue(new Callback<DuLieuTraVe>() {
-//            @Override
-//            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
-//                Log.d("ppppp", "onResponse: "+response.body().getDanhSachBaiViet());
-//                Log.d("aaaa", "onResponse: "+response.body().getDanhSachBaiViet().size());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
-//                Log.d("vvv", "onFailure: "+t.getMessage());
-//
-//            }
-//        });
+//        LocalDataManager.setIdNguoiDung("600688a68df31f0984c97de7");
+        loadTrangCaNhan();
+
         viewPager = findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(4);
         bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -165,7 +131,29 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        Intent i = getIntent();
+        if(i.getExtras() != null){
+            if(i.getStringExtra("chucNang").equals("TinNhanBack")){
+                viewPager.setCurrentItem(2);
+                bottomNavigationView.getMenu().findItem(R.id.tinNhan).setChecked(true);
+            }
+        }
 
+    }
+    private void loadTrangCaNhan(){
+        Call<DuLieuTraVe> call = ApiService.apiService.xemTrangCaNhan(LocalDataManager.getIdNguoiDung());
+        call.enqueue(new Callback<DuLieuTraVe>() {
+            @Override
+            public void onResponse(Call<DuLieuTraVe> call, Response<DuLieuTraVe> response) {
+                NguoiDung nguoiDung = response.body().getNguoiDung();
+                LocalDataManager.setNguoiDung(nguoiDung);
 
+            }
+
+            @Override
+            public void onFailure(Call<DuLieuTraVe> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Lỗi", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

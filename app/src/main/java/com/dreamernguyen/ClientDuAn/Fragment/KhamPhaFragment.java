@@ -6,7 +6,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.dreamernguyen.ClientDuAn.Activity.DangBaiActivity;
 import com.dreamernguyen.ClientDuAn.Models.BaiViet;
 import com.dreamernguyen.ClientDuAn.R;
 
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,8 +33,10 @@ import retrofit2.Response;
 public class KhamPhaFragment extends Fragment {
     RecyclerView rvBaiViet;
     BaiVietAdapter baiVietAdapter;
-
+    SwipeRefreshLayout refreshLayout;
     TextView tv;
+
+
 
 
     @Override
@@ -39,6 +44,8 @@ public class KhamPhaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_kham_pha, container, false);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+
         tv = view.findViewById(R.id.tv1);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +61,19 @@ public class KhamPhaFragment extends Fragment {
         rvBaiViet.setLayoutManager(linearLayoutManager);
         rvBaiViet.setAdapter(baiVietAdapter);
         loadBaiViet();
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadBaiViet();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setRefreshing(false);
+                    }
+                },3000);
+            }
+        });
         return view;
 
     }
@@ -68,6 +88,7 @@ public class KhamPhaFragment extends Fragment {
                 Log.d("fff", "onResponse: "+baiViet.getIdNguoiDung().getHoTen());
 //                Toast.makeText(getActivity(), ""+ response.body().size(), Toast.LENGTH_SHORT).show();
                 baiVietAdapter.setData(response.body());
+                baiVietAdapter.random();
             }
             @Override
             public void onFailure(Call<List<BaiViet>> call, Throwable t) {

@@ -5,10 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,9 +49,11 @@ public class BaiVietChiTietActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bai_viet_chi_tiet);
 
+
         tvNoiDung = findViewById(R.id.tvNoiDung);
         tvTenNguoiDung = findViewById(R.id.tvTenNguoiDung);
         vpgAnh = findViewById(R.id.vpgImage);
+
         binhLuanAdapter = new BinhLuanAdapter(this);
         rvBinhLuan = findViewById(R.id.rvBinhLuan);
         btnGui = findViewById(R.id.btnGui);
@@ -86,7 +90,7 @@ public class BaiVietChiTietActivity extends AppCompatActivity {
                 tvNoiDung.setText(baiViet.getNoiDung());
                 if(baiViet.getLinkAnh().size() > 0){
                     listAnh = baiViet.getLinkAnh();
-                    anhBaiVietAdapter = new AnhBaiVietAdapter(listAnh);
+                    anhBaiVietAdapter = new AnhBaiVietAdapter(listAnh,true);
                     vpgAnh.setVisibility(View.VISIBLE);
                     vpgAnh.setAdapter(anhBaiVietAdapter);
                     Log.d("ndndn", "onResponse: "+baiViet.getLinkAnh());
@@ -122,6 +126,9 @@ public class BaiVietChiTietActivity extends AppCompatActivity {
         });
     }
     private void binhLuan(String idBaiViet){
+        //ẩn bàn phím
+        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.hideSoftInputFromWindow(edBinhLuan.getApplicationWindowToken(),0);
         BinhLuan binhLuan = new BinhLuan(idBaiViet,edBinhLuan.getText().toString());
         Call<DuLieuTraVe> call = ApiService.apiService.binhLuan(LocalDataManager.getIdNguoiDung(),binhLuan);
         call.enqueue(new Callback<DuLieuTraVe>() {

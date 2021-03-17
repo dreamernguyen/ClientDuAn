@@ -48,7 +48,7 @@ public class TinNhanFragment extends Fragment {
             @Override
             public void onResponse(Call<List<NguoiDung>> call, Response<List<NguoiDung>> response) {
                 nguoiDungAdapter.setData(response.body());
-                Log.d("---", "onResponse: "+response.body().get(0).getHoTen());
+
             }
 
             @Override
